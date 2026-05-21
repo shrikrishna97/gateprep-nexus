@@ -748,6 +748,26 @@ h2 {
   .page-container {
     padding: 16px 20px 40px;
   }
+  
+  /* Q-Bank mobile responsiveness styles */
+  .mobile-only-toggle {
+    display: flex !important;
+  }
+  .qbank-grid {
+    display: block !important;
+  }
+  .qbank-sidebar.mobile-hide {
+    display: none !important;
+  }
+  .qbank-canvas-container.mobile-hide {
+    display: none !important;
+  }
+  .qbank-header-banner {
+    padding: 20px !important;
+  }
+  .qbank-canvas {
+    padding: 20px !important;
+  }
 }
 
 /* Medium Tablets & Mobile Screens (<= 768px) */

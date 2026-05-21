@@ -19,6 +19,7 @@ export default function CommunityQBank() {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [activeQuestionData, setActiveQuestionData] = useState(null);
   const [isPageLoading, setIsPageLoading] = useState(false);
+  const [mobileView, setMobileView] = useState('list'); // 'list' | 'question'
   
   // User Attempt & Grade State
   const [userSelection, setUserSelection] = useState([]); // indices for MCQ/MSQ
@@ -134,6 +135,7 @@ export default function CommunityQBank() {
     setUserNatInput('');
     setIsCorrect(false);
     setIsPartiallyCorrect(false);
+    setMobileView('question'); // Auto-switch mobile view to question canvas for fluid UX
     
     // Check if we already have progress for this question
     const storedAns = savedProgress.answers[qItem.relativePath];
@@ -466,11 +468,66 @@ export default function CommunityQBank() {
         )}
       </div>
 
-      {/* 2. Main Content Grid */}
+      {/* 2. Mobile View Mode Switcher (Tab segmented switcher visible only on mobile/tablet) */}
+      <div className="mobile-only-toggle" style={{
+        display: 'none', // Overridden by CSS under 1024px
+        background: 'rgba(255, 255, 255, 0.02)',
+        border: '1px solid var(--border-color)',
+        borderRadius: 'var(--radius-md)',
+        padding: '4px',
+        width: '100%',
+        boxSizing: 'border-box',
+        gap: '4px'
+      }}>
+        <button
+          onClick={() => setMobileView('list')}
+          style={{
+            flex: 1,
+            padding: '10px 16px',
+            borderRadius: 'var(--radius-sm)',
+            background: mobileView === 'list' ? 'rgba(139, 92, 246, 0.15)' : 'transparent',
+            border: 'none',
+            color: mobileView === 'list' ? '#c084fc' : 'var(--text-secondary)',
+            fontWeight: '700',
+            fontSize: '0.85rem',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            transition: 'all 0.2s ease'
+          }}
+        >
+          📋 Browse Questions
+        </button>
+        <button
+          onClick={() => setMobileView('question')}
+          style={{
+            flex: 1,
+            padding: '10px 16px',
+            borderRadius: 'var(--radius-sm)',
+            background: mobileView === 'question' ? 'rgba(139, 92, 246, 0.15)' : 'transparent',
+            border: 'none',
+            color: mobileView === 'question' ? '#c084fc' : 'var(--text-secondary)',
+            fontWeight: '700',
+            fontSize: '0.85rem',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            transition: 'all 0.2s ease'
+          }}
+        >
+          📝 Question Canvas {selectedQuestion ? '•' : ''}
+        </button>
+      </div>
+
+      {/* 3. Main Content Grid */}
       <div className="qbank-grid">
         
         {/* Left Side: Navigation Sidebar & Lists */}
-        <div className="qbank-sidebar">
+        <div className={`qbank-sidebar ${mobileView === 'question' ? 'mobile-hide' : ''}`}>
           
           {/* Scrollable Category Filter Chips */}
           <div className="qbank-panel" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -601,7 +658,7 @@ export default function CommunityQBank() {
         </div>
 
         {/* Right Side: Interactive Question Panel */}
-        <div style={{ minWidth: 0 }}>
+        <div className={`qbank-canvas-container ${mobileView === 'list' ? 'mobile-hide' : ''}`} style={{ minWidth: 0 }}>
           
           {!selectedQuestion ? (
             /* 1. Landing state */
