@@ -288,6 +288,11 @@ h2 {
   padding-right: 40px;
 }
 
+.form-select option {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
 /* Standard Buttons */
 .btn {
   display: inline-flex;
