@@ -373,7 +373,7 @@ export default function CommunityQBank() {
               }}>
                 <span style={{ fontSize: '1.1rem', lineHeight: '1' }}>🌟</span>
                 <div>
-                  <strong style={{ color: 'var(--accent-purple)' }}>GATE CS Overlap Alert:</strong> As a Computer Science candidate, focus on the categories marked with <span style={{ color: 'var(--accent-emerald)', fontWeight: 600 }}>🌟 (Shared)</span>. Linear Algebra, Probability, Calculus, DBMS, DSA, and General Aptitude are **100% applicable** to your syllabus. Machine Learning, AI, and past DA papers are outside the GATE CS scope.
+                  <strong style={{ color: 'var(--accent-purple)' }}>GATE CS Overlap Alert:</strong> As a Computer Science candidate, focus on the categories marked with <span style={{ color: 'var(--accent-emerald)', fontWeight: 600 }}>🌟 (Shared)</span>. Linear Algebra, Probability, Calculus, DBMS, DSA, and General Aptitude are <strong style={{ color: 'var(--text-primary)' }}>100% applicable</strong> to your syllabus. Machine Learning, AI, and past DA papers are outside the GATE CS scope.
                 </div>
               </div>
             )}
@@ -395,7 +395,7 @@ export default function CommunityQBank() {
               }}>
                 <span style={{ fontSize: '1.1rem', lineHeight: '1' }}>🔥</span>
                 <div>
-                  <strong style={{ color: 'var(--accent-emerald)' }}>Dual CS & DA Track:</strong> Excellent! You can practice **every single question** in this bank. The categories marked with <span style={{ color: 'var(--accent-emerald)', fontWeight: 600 }}>🌟 (Shared)</span> represent high-value core subjects shared across both CS and DA examinations.
+                  <strong style={{ color: 'var(--accent-emerald)' }}>Dual CS & DA Track:</strong> Excellent! You can practice <strong style={{ color: 'var(--text-primary)' }}>every single question</strong> in this bank. The categories marked with <span style={{ color: 'var(--accent-emerald)', fontWeight: 600 }}>🌟 (Shared)</span> represent high-value core subjects shared across both CS and DA examinations.
                 </div>
               </div>
             )}
