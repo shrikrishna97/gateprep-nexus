@@ -267,3 +267,569 @@ export const MOCK_TESTS = [
     ]
   }
 ];
+
+// Offline fallback seed questions from IITM GATE-DA Question Bank
+export const IITM_QBANK_OFFLINE_SEED = [
+  {
+    title: 'Question 1',
+    questionHtml: `<p>Is the following statement true or false?</p><p class="my-2 p-3 bg-white/5 border border-white/10 rounded-lg font-semibold text-purple-300">The row echelon form is defined only for square matrices.</p>`,
+    questionText: 'Is the following statement true or false? The row echelon form is defined only for square matrices.',
+    options: ['True', 'False'],
+    type: 'MCQ',
+    correctIdxs: [1],
+    correctIdx: 1,
+    natAnswer: '',
+    solutionHtml: `<p>The row echelon form is defined for matrices of any shape (rectangular or square). For example, a 3 × 5 matrix can easily be brought to row echelon form via Gaussian elimination. Thus, the statement is <strong>False</strong>.</p>`,
+    hintHtml: `<p>Consider the Gaussian elimination process. Does it restrict matrices to square dimensions before performing row operations?</p>`,
+    categories: ['linear_algebra'],
+    relativePath: 'linear_algebra/bank/question-001.html',
+    subject: 'linear_algebra'
+  },
+  {
+    title: 'Question 2',
+    questionHtml: `<p>What is the maximum rank that a 4 × 8 matrix can have?</p>`,
+    questionText: 'What is the maximum rank that a 4 x 8 matrix can have?',
+    options: [],
+    type: 'NAT',
+    correctIdxs: [],
+    correctIdx: null,
+    natAnswer: '4',
+    solutionHtml: `<p>The row rank is always equal to the column rank for any matrix.</p>
+<ul class="list-disc pl-5 my-2 space-y-1">
+  <li>The row rank is the dimension of the row space, which can be at most <i>m</i> = 4.</li>
+  <li>The column rank is the dimension of the column space, which can be at most <i>n</i> = 8.</li>
+</ul>
+<p>Therefore, the rank of an <i>m × n</i> matrix is at most <strong>min(m, n)</strong>. In this case, <code>min(4, 8) = 4</code>.</p>`,
+    hintHtml: `<p>Recall that the rank of a matrix A is bounded by the minimum of its dimensions: rank(A) ≤ min(m, n).</p>`,
+    categories: ['linear_algebra'],
+    relativePath: 'linear_algebra/bank/question-002.html',
+    subject: 'linear_algebra'
+  },
+  {
+    title: 'Question 1',
+    questionHtml: `<p>Let <b>w</b> = [1, 2, 3]ᵀ be the weight vector of a linear classifier for a binary classification problem whose labels lie in the set {0, 1}. If the bias of the classifier is set to 0, which of the following is the equation of the decision boundary for this classifier?</p>`,
+    questionText: 'w = [1, 2, 3]^T is the weight vector of a linear classifier for a binary classification problem whose labels lie in the set {0, 1}. If the bias of the classifier is set to 0, which of the following is the equation of the decision boundary for this classifier?',
+    options: [
+      'x₁ + 2x₂ + 3x₃ = 1',
+      'x₁ + 2x₂ + 3x₃ = -1',
+      'x₁ + 2x₂ + 3x₃ = 0',
+      'x₁ - 2x₂ + 3x₃ = 0'
+    ],
+    type: 'MCQ',
+    correctIdxs: [2],
+    correctIdx: 2,
+    natAnswer: '',
+    solutionHtml: `<p>The decision boundary for a linear classifier is given by the equation:</p>
+<p class="font-mono text-emerald-400 p-2 text-center bg-black/30 rounded my-2">wᵀ x + b = 0</p>
+<p>Since the bias <i>b = 0</i>, this simplifies to:</p>
+<p class="font-mono text-emerald-400 p-2 text-center bg-black/30 rounded my-2">wᵀ x = 0</p>
+<p>Taking the dot product of <b>w</b> and <b>x</b> = [x₁, x₂, x₃]ᵀ:</p>
+<p class="font-mono text-emerald-400 p-2 text-center bg-black/30 rounded my-2">1·x₁ + 2·x₂ + 3·x₃ = 0</p>
+<p>Therefore, the correct equation is <strong>x₁ + 2x₂ + 3x₃ = 0</strong>.</p>`,
+    hintHtml: `<p>A linear decision boundary separates the space based on where the score function wᵀx + b evaluates to exactly zero.</p>`,
+    categories: ['machine_learning'],
+    relativePath: 'machine_learning/bank/question-001.html',
+    subject: 'machine_learning'
+  },
+  {
+    title: 'Question 2',
+    questionHtml: `<p>Which of the following classifiers produce a linear decision boundary in the feature space?</p>`,
+    questionText: 'Which of the following classifiers produce a linear decision boundary in the feature space?',
+    options: [
+      'Perceptron',
+      'Logistic regression',
+      'Kernel SVM with Gaussian kernel',
+      'A neural network with two hidden layers that has ReLU activations in the hidden layers'
+    ],
+    type: 'MSQ',
+    correctIdxs: [0, 1],
+    correctIdx: 0,
+    natAnswer: '',
+    solutionHtml: `<p>Let's evaluate each option:</p>
+<ul class="list-disc pl-5 my-2 space-y-2">
+  <li><strong>Perceptron:</strong> Uses a linear combination of inputs (wᵀx + b) passed through a step function. Renders a strictly linear decision boundary.</li>
+  <li><strong>Logistic Regression:</strong> Models the log-odds as a linear combination (wᵀx + b). The decision boundary (probability = 0.5) corresponds to wᵀx + b = 0, which is strictly linear.</li>
+  <li><strong>Kernel SVM (Gaussian RBF Kernel):</strong> Projects features into an infinite-dimensional space, yielding complex, non-linear boundaries in the original feature space.</li>
+  <li><strong>Neural Network with ReLU:</strong> Renders a highly non-linear, piece-wise linear decision boundary due to multiple layers of activations.</li>
+</ul>
+<p>Thus, the correct options are <strong>Perceptron</strong> and <strong>Logistic regression</strong>.</p>`,
+    hintHtml: `<p>Look for classifiers whose decision equations depend strictly on a linear score term wᵀx + b = 0 without higher-order feature mappings or non-linear layer stacks.</p>`,
+    categories: ['machine_learning'],
+    relativePath: 'machine_learning/bank/question-002.html',
+    subject: 'machine_learning'
+  },
+  {
+    title: 'Question 1',
+    questionHtml: `<p>There are thirteen flights from Delhi to Bangalore, and then six flights from Bangalore to Chennai. Saumya wants to fly from Delhi to Bangalore and then to Chennai. How many choices does she have for her flight plan?</p>`,
+    questionText: 'There are thirteen flights from Delhi to Bangalore, and then six flights from Bangalore to Chennai. Saumya wants to fly from Delhi to Bangalore and then to Chennai. How many choices does she have for her flight plan?',
+    options: ['19', '72', '78', '39'],
+    type: 'MCQ',
+    correctIdxs: [2],
+    correctIdx: 2,
+    natAnswer: '',
+    solutionHtml: `<p>This counting problem can be modeled as a sequence of two independent actions:</p>
+<ul class="list-decimal pl-5 my-2 space-y-1">
+  <li>Action A: Delhi to Bangalore (13 choices).</li>
+  <li>Action B: Bangalore to Chennai (6 choices).</li>
+</ul>
+<p>By the basic <strong>multiplication rule of counting</strong>, the total number of distinct flight plans is the product of the choices for each stage:</p>
+<p class="font-mono text-center text-xl text-emerald-400 bg-black/20 p-2 rounded my-2">13 × 6 = 78 choices</p>`,
+    hintHtml: `<p>Saumya needs to complete both steps sequentially. Apply the fundamental counting principle.</p>`,
+    categories: ['prob_stats'],
+    relativePath: 'prob_stats/bank/question-001.html',
+    subject: 'prob_stats'
+  },
+  {
+    title: 'Question 2',
+    questionHtml: `<p>A professor is creating an exam of eleven questions from a test bank of 15 questions. In how many ways can he select and arrange the questions?</p>`,
+    questionText: 'A professor is creating an exam of eleven questions from a test bank of 15 questions. In how many ways can he select and arrange the questions?',
+    options: ['15!', '15! / (11! · 4!)', '15! / 11!', '15! / 4!'],
+    type: 'MCQ',
+    correctIdxs: [3],
+    correctIdx: 3,
+    natAnswer: '',
+    solutionHtml: `<p>This process consists of two stages: selecting the questions, and then arranging them.</p>
+<p class="font-semibold text-purple-300">Method 1 (Combinations and Permutations):</p>
+<ul class="list-disc pl-5 my-2 space-y-1">
+  <li>Number of ways to select 11 questions out of 15: <code>¹⁵C₁₁ = 15! / (11! · (15-11)!) = 15! / (11! · 4!)</code></li>
+  <li>Number of ways to arrange the 11 chosen questions in order: <code>11!</code></li>
+  <li>Total ways = <code>¹⁵C₁₁ × 11! = [15! / (11! · 4!)] × 11! = 15! / 4!</code></li>
+</ul>
+<p class="font-semibold text-purple-300">Method 2 (Direct Permutation):</p>
+<p>Since order matters (we select and arrange), we can directly compute this as the number of permutations of 11 elements from a set of 15:</p>
+<p class="font-mono text-center text-emerald-400 bg-black/20 p-2 rounded my-2">¹⁵P₁₁ = 15! / (15 - 11)! = 15! / 4!</p>`,
+    hintHtml: `<p>Does the order of the questions on the exam paper matter? Yes, because we "select and arrange". Use permutations.</p>`,
+    categories: ['prob_stats'],
+    relativePath: 'prob_stats/bank/question-002.html',
+    subject: 'prob_stats'
+  },
+  {
+    title: 'Question 1',
+    questionHtml: `<p>Let <i>f</i> and <i>g</i> be two real valued functions such that <code>g(x) = f(x) - 2</code>. Select all true options.</p>`,
+    questionText: 'Let f and g be two real valued functions such that g(x) = f(x) - 2. Select all true options.',
+    options: [
+      'If f is odd, then g is odd.',
+      'If f is even, then g is even.',
+      'If g is odd, then f is odd.',
+      'If g is even, then f is even.'
+    ],
+    type: 'MSQ',
+    correctIdxs: [1, 3],
+    correctIdx: 1,
+    natAnswer: '',
+    solutionHtml: `<p>Recall the definitions of even and odd functions:</p>
+<ul class="list-disc pl-5 my-2 space-y-1">
+  <li>An <strong>even</strong> function satisfies: <code>h(-x) = h(x)</code> for all x.</li>
+  <li>An <strong>odd</strong> function satisfies: <code>h(-x) = -h(x)</code> for all x.</li>
+</ul>
+<p class="font-semibold text-purple-300 mt-3">Evaluating evenness:</p>
+<p>If <i>f</i> is even, then <code>f(-x) = f(x)</code>. Substituting this in the expression for <i>g</i>:</p>
+<p class="font-mono ml-4 text-emerald-400 font-semibold my-1">g(-x) = f(-x) - 2 = f(x) - 2 = g(x)</p>
+<p>So <i>g</i> is also even. This proves option 2.</p>
+<p>Similarly, if <i>g</i> is even, then <code>g(-x) = g(x)</code>. Expressing <i>f</i> as <code>f(x) = g(x) + 2</code>:</p>
+<p class="font-mono ml-4 text-emerald-400 font-semibold my-1">f(-x) = g(-x) + 2 = g(x) + 2 = f(x)</p>
+<p>So <i>f</i> is also even. This proves option 4.</p>
+<p class="font-semibold text-purple-300 mt-3">Evaluating oddness:</p>
+<p>Translation by a constant shifts the graph vertically, which breaks the rotational origin symmetry required for odd functions. For example, if <code>f(x) = x</code> (odd), then <code>g(x) = x - 2</code>. We have <code>g(-x) = -x - 2</code>, which is neither equal to <code>g(x)</code> nor <code>-g(x) = -x + 2</code>. So <i>g</i> is neither even nor odd.</p>`,
+    hintHtml: `<p>Substitute -x into g(x) and use the properties of even and odd functions.</p>`,
+    categories: ['calculus'],
+    relativePath: 'calculus/bank/question-001.html',
+    subject: 'calculus'
+  },
+  {
+    title: 'Question 1',
+    questionHtml: `<p>Consider two relations <b>s</b>(A, B, C) and <b>r</b>(P, Q, C) such that relation <b>s</b> has 30 rows and relation <b>r</b> has 12 rows. What is the maximum number of rows that are possible in the natural join <code><b>r</b> ⋈ <b>s</b></code>?</p>`,
+    questionText: 'Consider two relations s(A, B, C) and r(P, Q, C) such that relation s has 30 rows and relation r has 12 rows. What is the maximum number of rows that are possible in r ⋈ s?',
+    options: [],
+    type: 'NAT',
+    correctIdxs: [],
+    correctIdx: null,
+    natAnswer: '360',
+    solutionHtml: `<p>The natural join is performed on the common attribute, which is <b>C</b>.</p>
+<p>The maximum number of rows in the natural join occurs when <em>every</em> row in relation <b>r</b> matches with <em>every</em> row in relation <b>s</b>. This happens when all rows in both relations share the exact same value for attribute C.</p>
+<p>In this worst-case scenario, the natural join behaves exactly like a Cartesian product for all practical purposes:</p>
+<p class="font-mono text-center text-xl text-emerald-400 bg-black/20 p-2 rounded my-2">Max Rows = |r| × |s| = 12 × 30 = 360 rows</p>`,
+    hintHtml: `<p>Identify the common attribute on which the natural join operates. In what case will every row of r match with every row of s?</p>`,
+    categories: ['dbms'],
+    relativePath: 'dbms/bank/question-001.html',
+    subject: 'dbms'
+  },
+  {
+    title: 'Question 1',
+    questionHtml: `<p>What is the output of the following Python code snippet?</p>
+<pre class="bg-black/40 border border-white/5 rounded p-3 text-emerald-400 font-mono text-sm my-3"><code>def foo(n):
+    if n % 2 == 0:
+        return n // 2
+    return 3 * n + 1
+
+count = 0
+x = 10
+while x != 1:
+    x = foo(x)
+    count += 1
+print(count)</code></pre>`,
+    questionText: 'What is the output of the following Python snippet of code? (Collatz trace starting at 10)',
+    options: [],
+    type: 'NAT',
+    correctIdxs: [],
+    correctIdx: null,
+    natAnswer: '6',
+    solutionHtml: `<p>Let's trace the values of <code>x</code> and <code>count</code> at each iteration of the loop:</p>
+<div class="overflow-x-auto my-3 rounded-lg border border-white/10">
+  <table class="w-full text-sm text-left bg-black/30">
+    <thead class="text-xs uppercase bg-white/10 text-purple-300">
+      <tr>
+        <th class="px-4 py-2">Iteration</th>
+        <th class="px-4 py-2">Input x</th>
+        <th class="px-4 py-2">x is Even?</th>
+        <th class="px-4 py-2">Next x</th>
+        <th class="px-4 py-2">New count</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-white/5">
+      <tr>
+        <td class="px-4 py-2">1</td>
+        <td class="px-4 py-2">10</td>
+        <td class="px-4 py-2">Yes</td>
+        <td class="px-4 py-2">10 // 2 = 5</td>
+        <td class="px-4 py-2 font-semibold text-emerald-400">1</td>
+      </tr>
+      <tr>
+        <td class="px-4 py-2">2</td>
+        <td class="px-4 py-2">5</td>
+        <td class="px-4 py-2">No</td>
+        <td class="px-4 py-2">3 * 5 + 1 = 16</td>
+        <td class="px-4 py-2 font-semibold text-emerald-400">2</td>
+      </tr>
+      <tr>
+        <td class="px-4 py-2">3</td>
+        <td class="px-4 py-2">16</td>
+        <td class="px-4 py-2">Yes</td>
+        <td class="px-4 py-2">16 // 2 = 8</td>
+        <td class="px-4 py-2 font-semibold text-emerald-400">3</td>
+      </tr>
+      <tr>
+        <td class="px-4 py-2">4</td>
+        <td class="px-4 py-2">8</td>
+        <td class="px-4 py-2">Yes</td>
+        <td class="px-4 py-2">8 // 2 = 4</td>
+        <td class="px-4 py-2 font-semibold text-emerald-400">4</td>
+      </tr>
+      <tr>
+        <td class="px-4 py-2">5</td>
+        <td class="px-4 py-2">4</td>
+        <td class="px-4 py-2">Yes</td>
+        <td class="px-4 py-2">4 // 2 = 2</td>
+        <td class="px-4 py-2 font-semibold text-emerald-400">5</td>
+      </tr>
+      <tr>
+        <td class="px-4 py-2">6</td>
+        <td class="px-4 py-2">2</td>
+        <td class="px-4 py-2">Yes</td>
+        <td class="px-4 py-2">2 // 2 = 1</td>
+        <td class="px-4 py-2 font-semibold text-emerald-400">6</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<p>When <code>x = 1</code>, the loop condition <code>x != 1</code> becomes false, and the loop terminates. The printed count is <strong>6</strong>.</p>`,
+    hintHtml: `<p>Trace the value of x step-by-step. If even, divide by 2. If odd, multiply by 3 and add 1. Stop when x reaches 1.</p>`,
+    categories: ['pdsa'],
+    relativePath: 'pdsa/bank/question-001.html',
+    subject: 'pdsa'
+  },
+  {
+    title: 'Question 1',
+    questionHtml: `<p class="text-lg font-semibold my-2 text-purple-300">Courage : Bravery :: Yearning : __________</p><p>Select the most appropriate option to complete the analogy.</p>`,
+    questionText: 'Courage : Bravery :: Yearning : __________ Select the most appropriate option to complete the analogy.',
+    options: ['Longing', 'Yelling', 'Yawning', 'Glaring'],
+    type: 'MCQ',
+    correctIdxs: [0],
+    correctIdx: 0,
+    natAnswer: '',
+    solutionHtml: `<p>This question tests semantic analogy (synonyms):</p>
+<ul class="list-disc pl-5 my-2 space-y-1">
+  <li><strong>Courage</strong> and <strong>Bravery</strong> are direct synonyms.</li>
+  <li>Similarly, <strong>Yearning</strong> represents a strong feeling of wishing or craving for something, which is directly synonymous with <strong>Longing</strong>.</li>
+</ul>
+<p>The other choices (Yelling, Yawning, Glaring) are unrelated verbs and nouns.</p>`,
+    hintHtml: `<p>Find the relationship between the first pair (Courage and Bravery) and apply the same relationship to Yearning.</p>`,
+    categories: ['gate_2025'],
+    relativePath: 'papers/GATE-2025/question-01.html',
+    subject: 'papers/GATE-2025'
+  }
+];
+
+// Browser dynamic crawlers for client-side live syncing
+export function parseIITMSidebar(htmlText) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlText, 'text/html');
+  
+  // Find all a tags
+  const aTags = doc.querySelectorAll('a[href]');
+  const questionsList = [];
+  
+  aTags.forEach(a => {
+    const href = a.getAttribute('href');
+    const text = a.textContent.trim();
+    
+    if (!href) return;
+    let cleanPath = href.replace(/^\.\//, ''); // replace leading ./
+    cleanPath = cleanPath.replace(/^(\.\.\/)+/, ''); // replace leading ../
+    cleanPath = cleanPath.trim();
+    
+    // Ignore external links, mailto, search page, index pages
+    if (cleanPath.startsWith('http') || cleanPath.startsWith('mailto') || cleanPath.includes('search') || cleanPath.endsWith('index.html')) {
+      return;
+    }
+    
+    // Only accept question subpages
+    if (!cleanPath.endsWith('.html') || (!cleanPath.includes('/bank/') && !cleanPath.includes('/papers/'))) {
+      return;
+    }
+    
+    // Categorize
+    let category = null;
+    if (cleanPath.includes('aptitude/')) {
+      category = { id: 'aptitude', name: 'General Aptitude' };
+    } else if (cleanPath.includes('linear_algebra/')) {
+      category = { id: 'linear_algebra', name: 'Linear Algebra' };
+    } else if (cleanPath.includes('calculus/')) {
+      category = { id: 'calculus', name: 'Calculus & Optimization' };
+    } else if (cleanPath.includes('prob_stats/')) {
+      category = { id: 'prob_stats', name: 'Probability & Statistics' };
+    } else if (cleanPath.includes('machine_learning/')) {
+      category = { id: 'machine_learning', name: 'Machine Learning' };
+    } else if (cleanPath.includes('ai/')) {
+      category = { id: 'ai', name: 'Artificial Intelligence' };
+    } else if (cleanPath.includes('dbms/')) {
+      category = { id: 'dbms', name: 'Database Management' };
+    } else if (cleanPath.includes('pdsa/')) {
+      category = { id: 'pdsa', name: 'Programming & DSA' };
+    } else if (cleanPath.includes('papers/GATE-2025/')) {
+      category = { id: 'gate_2025', name: 'GATE-2025 Paper' };
+    } else if (cleanPath.includes('papers/GATE-2024/')) {
+      category = { id: 'gate_2024', name: 'GATE-2024 Paper' };
+    }
+    
+    if (!category) return;
+    
+    // Extract question number/name
+    let qLabel = text || 'Question';
+    if (qLabel.toLowerCase() === 'question' || qLabel === '') {
+      const match = cleanPath.match(/question-(\d+)\.html/i);
+      if (match) {
+        qLabel = `Question ${parseInt(match[1], 10)}`;
+      }
+    }
+    
+    // Avoid duplicates
+    if (!questionsList.some(q => q.relativePath === cleanPath)) {
+      questionsList.push({
+        relativePath: cleanPath,
+        title: qLabel,
+        category: category.id,
+        categoryName: category.name
+      });
+    }
+  });
+  
+  // Sort questions
+  questionsList.sort((a, b) => {
+    if (a.category !== b.category) {
+      return a.category.localeCompare(b.category);
+    }
+    const aMatch = a.relativePath.match(/question-(\d+)\.html/i);
+    const bMatch = b.relativePath.match(/question-(\d+)\.html/i);
+    if (aMatch && bMatch) {
+      return parseInt(aMatch[1], 10) - parseInt(bMatch[1], 10);
+    }
+    return a.title.localeCompare(b.title);
+  });
+  
+  return questionsList;
+}
+
+export function parseIITMQuestionPage(htmlText, relativePath) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlText, 'text/html');
+  
+  // Find main content
+  let mainContent = doc.querySelector('main.content') || doc.getElementById('quarto-document-content');
+  if (!mainContent) {
+    throw new Error('Main content not found in HTML');
+  }
+  
+  // Rewrite all anchor tags to be absolute and open in new tab
+  mainContent.querySelectorAll('a').forEach(a => {
+    let href = a.getAttribute('href');
+    if (href) {
+      if (!href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('mailto:') && !href.startsWith('#')) {
+        if (href.startsWith('/')) {
+          href = href.slice(1);
+        }
+        a.setAttribute('href', `https://iitmbsc-student-projects.github.io/gate-da/${href}`);
+      }
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener noreferrer');
+      a.classList.add('parsed-link');
+    }
+  });
+  
+  // Extract categories if any
+  const categories = [];
+  mainContent.querySelectorAll('.quarto-category').forEach(el => {
+    categories.push(el.textContent.trim());
+  });
+  
+  // Extract title
+  let titleEl = mainContent.querySelector('h1.title') || doc.querySelector('h1');
+  let title = titleEl ? titleEl.textContent.trim() : 'Question';
+  
+  // Scrape question text before the first callout
+  const firstCallout = mainContent.querySelector('.callout');
+  
+  let questionHtml = '';
+  let questionText = '';
+  
+  let children = Array.from(mainContent.children);
+  for (let child of children) {
+    if (child === firstCallout) break;
+    // Skip title block header
+    if (child.tagName === 'HEADER' || child.classList.contains('quarto-title-block') || child.id === 'title-block-header') {
+      continue;
+    }
+    // Skip options container task list
+    if (child.classList.contains('task-list') || child.querySelector('.task-list')) {
+      continue;
+    }
+    
+    questionHtml += child.outerHTML;
+    questionText += child.textContent + '\n';
+  }
+  
+  questionHtml = questionHtml.trim();
+  questionText = questionText.trim();
+  
+  // Parse options
+  let options = [];
+  let taskList = mainContent.querySelector(':not(.callout) > .task-list, :not(.callout) .task-list');
+  if (!taskList) {
+    taskList = mainContent.querySelector('.task-list');
+  }
+  
+  if (taskList) {
+    taskList.querySelectorAll('li').forEach(li => {
+      options.push(li.textContent.trim());
+    });
+  }
+  
+  // Parse Correct Answer (from "Answer" callout) and Solution (from "Solution/Soluton" callout)
+  let correctIdxs = [];
+  let type = 'MCQ';
+  let isCheckedFound = false;
+  let natAnswer = '';
+  
+  const callouts = mainContent.querySelectorAll('.callout');
+  let answerCallout = null;
+  let solutionCallout = null;
+  let hintCallout = null;
+  
+  callouts.forEach(callout => {
+    const titleContainer = callout.querySelector('.callout-title-container');
+    if (titleContainer) {
+      const text = titleContainer.textContent.toLowerCase();
+      if (text.includes('answer')) {
+        answerCallout = callout;
+      } else if (text.includes('solution') || text.includes('soluton')) {
+        solutionCallout = callout;
+      } else if (text.includes('hint')) {
+        hintCallout = callout;
+      }
+    }
+  });
+  
+  if (answerCallout) {
+    const listItems = answerCallout.querySelectorAll('li');
+    const checkedInputs = answerCallout.querySelectorAll('input[checked]');
+    const allInputs = answerCallout.querySelectorAll('input');
+    
+    if (listItems.length > 0) {
+      listItems.forEach((li, idx) => {
+        const input = li.querySelector('input');
+        if (input && (input.hasAttribute('checked') || input.checked)) {
+          correctIdxs.push(idx);
+          isCheckedFound = true;
+        }
+      });
+      
+      if (!isCheckedFound) {
+        allInputs.forEach((input, idx) => {
+          if (input.checked || input.hasAttribute('checked')) {
+            correctIdxs.push(idx);
+            isCheckedFound = true;
+          }
+        });
+      }
+    } else {
+      const body = answerCallout.querySelector('.callout-body-container') || answerCallout;
+      natAnswer = body.textContent.trim();
+      type = 'NAT';
+    }
+  }
+  
+  if (type !== 'NAT') {
+    if (correctIdxs.length > 1) {
+      type = 'MSQ';
+    } else if (correctIdxs.length === 1) {
+      type = 'MCQ';
+    } else {
+      if (options.length > 0) {
+        type = 'MCQ';
+        correctIdxs = [0]; // fallback
+      } else {
+        type = 'NAT';
+        if (answerCallout) {
+          natAnswer = answerCallout.textContent.replace(/NoteAnswer/i, '').trim();
+        }
+      }
+    }
+  }
+  
+  if (type === 'NAT' && natAnswer) {
+    natAnswer = natAnswer.replace(/^(NoteAnswer|Answer|Note)\s+/i, '').trim();
+  }
+  
+  let solutionHtml = '';
+  if (solutionCallout) {
+    const body = solutionCallout.querySelector('.callout-body-container') || solutionCallout;
+    solutionHtml = body.innerHTML.trim();
+    // Strip toggle buttons/headers inside if any
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = solutionHtml;
+    const toggle = tempDiv.querySelector('.callout-btn-toggle');
+    if (toggle) toggle.remove();
+    solutionHtml = tempDiv.innerHTML.trim();
+  }
+  
+  let hintHtml = '';
+  if (hintCallout) {
+    const body = hintCallout.querySelector('.callout-body-container') || hintCallout;
+    hintHtml = body.innerHTML.trim();
+  }
+  
+  return {
+    title,
+    questionHtml,
+    questionText,
+    options,
+    type,
+    correctIdxs,
+    correctIdx: correctIdxs.length > 0 ? correctIdxs[0] : null,
+    natAnswer,
+    solutionHtml,
+    hintHtml,
+    categories,
+    relativePath
+  };
+}

@@ -13,6 +13,7 @@ import Planner from './views/Planner';
 import Practice from './views/Practice';
 import Formulas from './views/Formulas';
 import Advisor from './views/Advisor';
+import CommunityQBank from './views/CommunityQBank';
 
 // Layout Orchestration Component
 const Layout = () => {
@@ -33,6 +34,7 @@ const Layout = () => {
       case 'planner': return <Planner />;
       case 'practice': return <Practice />;
       case 'formulas': return <Formulas />;
+      case 'iitm-qbank': return <CommunityQBank />;
       case 'advisor': return <Advisor />;
       default: return <Dashboard />;
     }

@@ -57,6 +57,16 @@ const Sidebar = ({ isMobileOpen, onCloseMobileNav }) => {
       )
     },
     {
+      id: 'iitm-qbank',
+      label: 'IITM Student Q-Bank',
+      icon: (
+        <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" />
+        </svg>
+      )
+    },
+    {
       id: 'noticeboard',
       label: 'Notice Board',
       icon: (

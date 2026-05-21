@@ -275,80 +275,187 @@ Thank you for your question! To help you achieve a high rank, here is my recomme
     }
   };
 
-  // Helper to render basic markdown-like paragraphs, headers, lists and blockquotes in UI
+  // Helper to render high-fidelity markdown-like paragraphs, headers, lists and blockquotes line-by-line
   const formatAdvisorText = (txt) => {
-    return txt.split('\n\n').map((para, pIdx) => {
-      // Header 3
-      if (para.startsWith('### ')) {
-        return <h3 key={pIdx} style={{ fontSize: '1.25rem', fontWeight: 800, margin: '20px 0 10px', color: 'var(--text-primary)' }}>{para.replace('### ', '')}</h3>;
-      }
-      // Header 4
-      if (para.startsWith('#### ')) {
-        return <h4 key={pIdx} style={{ fontSize: '1.05rem', fontWeight: 700, margin: '16px 0 8px', color: 'var(--accent-purple)' }}>{para.replace('#### ', '')}</h4>;
-      }
-      // Blockquotes
-      if (para.startsWith('> ')) {
-        const type = para.includes('> ⚠️') ? 'danger' : (para.includes('> 💡') ? 'info' : 'normal');
-        let borderColor = 'var(--accent-purple)';
-        let bgColor = 'rgba(139, 92, 246, 0.02)';
-        if (type === 'danger') {
-          borderColor = 'var(--accent-rose)';
-          bgColor = 'rgba(244, 63, 94, 0.02)';
+    if (!txt) return null;
+    
+    const lines = txt.split('\n');
+    
+    // Helper to parse inline bolding **text** inside any line
+    const renderInlineStyles = (line) => {
+      if (!line) return '';
+      const parts = [];
+      let currentIdx = 0;
+      const regex = /\*\*(.*?)\*\*/g;
+      let match;
+      
+      while ((match = regex.exec(line)) !== null) {
+        if (match.index > currentIdx) {
+          parts.push(line.substring(currentIdx, match.index));
         }
-        return (
-          <blockquote key={pIdx} style={{
+        parts.push(<strong key={match.index} style={{ color: 'var(--text-primary)', fontWeight: 700 }}>{match[1]}</strong>);
+        currentIdx = regex.lastIndex;
+      }
+      
+      if (currentIdx < line.length) {
+        parts.push(line.substring(currentIdx));
+      }
+      
+      return parts.length > 0 ? parts : line;
+    };
+    
+    let inBlockquote = false;
+    let blockquoteLines = [];
+    const elements = [];
+    
+    const flushBlockquote = (key) => {
+      if (blockquoteLines.length > 0) {
+        const quoteText = blockquoteLines.join('\n');
+        const isDanger = quoteText.includes('⚠️') || quoteText.toLowerCase().includes('critical') || quoteText.toLowerCase().includes('warning');
+        const isInfo = quoteText.includes('💡') || quoteText.toLowerCase().includes('tip') || quoteText.toLowerCase().includes('advisor');
+        
+        let borderColor = 'var(--accent-purple)';
+        let bgColor = 'rgba(139, 92, 246, 0.03)';
+        if (isDanger) {
+          borderColor = 'var(--accent-rose)';
+          bgColor = 'rgba(244, 63, 94, 0.04)';
+        } else if (isInfo) {
+          borderColor = 'var(--accent-emerald)';
+          bgColor = 'rgba(16, 185, 129, 0.04)';
+        }
+        
+        elements.push(
+          <blockquote key={key} style={{
             padding: '14px 18px',
             borderLeft: `4px solid ${borderColor}`,
             backgroundColor: bgColor,
             borderRadius: '0 var(--radius-sm) var(--radius-sm) 0',
-            fontSize: '0.85rem',
-            lineHeight: 1.4,
+            fontSize: '0.88rem',
+            lineHeight: 1.5,
             margin: '12px 0',
-            color: 'var(--text-secondary)'
+            color: 'var(--text-secondary)',
+            whiteSpace: 'pre-wrap'
           }}>
-            {para.replace(/> \s*/, '')}
+            {renderInlineStyles(quoteText)}
           </blockquote>
         );
+        blockquoteLines = [];
+        inBlockquote = false;
       }
-      // Bullet lists
-      if (para.startsWith('* ') || para.startsWith('- ')) {
-        return (
-          <ul key={pIdx} style={{ paddingLeft: '20px', margin: '8px 0', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            {para.split('\n').map((li, lIdx) => {
-              const cleanedLi = li.replace(/^[\*\-]\s*/, '');
-              // Bold subheaders inside list
-              if (cleanedLi.includes('**')) {
-                const parts = cleanedLi.split('**');
-                return (
-                  <li key={lIdx} style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
-                    <strong>{parts[1]}</strong>{parts[2]}
-                  </li>
-                );
-              }
-              return <li key={lIdx} style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>{cleanedLi}</li>;
-            })}
-          </ul>
+    };
+    
+    for (let i = 0; i < lines.length; i++) {
+      const rawLine = lines[i];
+      const trimmedLine = rawLine.trim();
+      
+      // Handle empty lines
+      if (trimmedLine === '') {
+        flushBlockquote(`quote-${i}`);
+        elements.push(<div key={`space-${i}`} style={{ height: '8px' }} />);
+        continue;
+      }
+      
+      // Handle blockquotes
+      if (trimmedLine.startsWith('> ')) {
+        inBlockquote = true;
+        blockquoteLines.push(trimmedLine.replace(/^>\s?/, ''));
+        continue;
+      } else if (inBlockquote) {
+        // If we were in a blockquote but this line is not blockquote, flush it
+        flushBlockquote(`quote-${i}`);
+      }
+      
+      // Handle Headers
+      if (trimmedLine.startsWith('### ')) {
+        elements.push(
+          <h3 key={`h3-${i}`} style={{
+            fontSize: '1.25rem',
+            fontWeight: 800,
+            margin: '18px 0 10px',
+            color: 'var(--text-primary)',
+            letterSpacing: '-0.02em'
+          }}>
+            {renderInlineStyles(trimmedLine.replace('### ', ''))}
+          </h3>
         );
+        continue;
       }
-      // Standard inline bold styling
-      if (para.includes('**')) {
-        const parts = para.split('**');
-        // Simple formatting support for single bold element in text
-        if (parts.length >= 3) {
-          return (
-            <p key={pIdx} style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.5, margin: '6px 0' }}>
-              {parts[0]}<strong>{parts[1]}</strong>{parts.slice(2).join('')}
-            </p>
-          );
-        }
+      
+      if (trimmedLine.startsWith('#### ')) {
+        elements.push(
+          <h4 key={`h4-${i}`} style={{
+            fontSize: '1.05rem',
+            fontWeight: 700,
+            margin: '14px 0 8px',
+            color: 'var(--accent-purple)',
+            letterSpacing: '-0.01em'
+          }}>
+            {renderInlineStyles(trimmedLine.replace('#### ', ''))}
+          </h4>
+        );
+        continue;
       }
-
-      return (
-        <p key={pIdx} style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.5, margin: '6px 0', whiteSpace: 'pre-line' }}>
-          {para}
+      
+      // Handle bullet list items (starts with * or -)
+      const bulletMatch = trimmedLine.match(/^[\*\-]\s+(.*)$/);
+      if (bulletMatch) {
+        const indentLevel = rawLine.match(/^\s*/)[0].length;
+        elements.push(
+          <div key={`li-bullet-${i}`} style={{
+            display: 'flex',
+            gap: '8px',
+            paddingLeft: `${16 + indentLevel * 4}px`,
+            margin: '4px 0',
+            fontSize: '0.9rem',
+            lineHeight: 1.5,
+            color: 'var(--text-secondary)'
+          }}>
+            <span style={{ color: 'var(--accent-purple)', flexShrink: 0 }}>•</span>
+            <div style={{ flexGrow: 1 }}>{renderInlineStyles(bulletMatch[1])}</div>
+          </div>
+        );
+        continue;
+      }
+      
+      // Handle numbered list items (starts with 1., 2. etc.)
+      const numberMatch = trimmedLine.match(/^(\d+)\.\s+(.*)$/);
+      if (numberMatch) {
+        const indentLevel = rawLine.match(/^\s*/)[0].length;
+        elements.push(
+          <div key={`li-num-${i}`} style={{
+            display: 'flex',
+            gap: '8px',
+            paddingLeft: `${16 + indentLevel * 4}px`,
+            margin: '4px 0',
+            fontSize: '0.9rem',
+            lineHeight: 1.5,
+            color: 'var(--text-secondary)'
+          }}>
+            <span style={{ color: 'var(--accent-purple)', fontWeight: 700, flexShrink: 0 }}>{numberMatch[1]}.</span>
+            <div style={{ flexGrow: 1 }}>{renderInlineStyles(numberMatch[2])}</div>
+          </div>
+        );
+        continue;
+      }
+      
+      // Default line rendering (regular paragraph)
+      elements.push(
+        <p key={`p-${i}`} style={{
+          fontSize: '0.9rem',
+          color: 'var(--text-secondary)',
+          lineHeight: 1.6,
+          margin: '4px 0',
+          whiteSpace: 'pre-wrap'
+        }}>
+          {renderInlineStyles(rawLine)}
         </p>
       );
-    });
+    }
+    
+    // Flush any trailing blockquotes
+    flushBlockquote('quote-end');
+    
+    return elements;
   };
 
   const SUGGESTIONS = [
@@ -491,14 +598,17 @@ Thank you for your question! To help you achieve a high rank, here is my recomme
 
         {/* Quick Suggestion buttons */}
         <div style={{
-          padding: '12px 20px',
+          padding: '14px 20px',
           borderTop: '1px solid var(--border-color)',
           display: 'flex',
+          alignItems: 'center',
           gap: '10px',
           overflowX: 'auto',
+          overflowY: 'hidden',
           backgroundColor: 'rgba(0,0,0,0.05)',
           whiteSpace: 'nowrap',
-          scrollbarWidth: 'none'
+          scrollbarWidth: 'none',
+          minHeight: '62px'
         }} className="no-scrollbar advisor-suggestions-container">
           {SUGGESTIONS.map((s) => (
             <button
@@ -510,9 +620,9 @@ Thank you for your question! To help you achieve a high rank, here is my recomme
                 fontSize: '0.75rem',
                 fontWeight: 700,
                 cursor: 'pointer',
-                backgroundColor: 'rgba(255,255,255,0.02)',
-                border: '1px solid var(--border-color)',
-                color: 'var(--text-secondary)',
+                backgroundColor: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                color: 'var(--text-primary)',
                 transition: 'all 0.15s ease',
                 flexShrink: 0
               }}

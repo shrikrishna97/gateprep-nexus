@@ -202,7 +202,21 @@ const Planner = () => {
 
                       {/* Resources */}
                       <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                        📖 Reference: <span style={{ color: 'var(--accent-purple)', fontWeight: 600 }}>{day.resource}</span>
+                        📖 Reference:{' '}
+                        <a 
+                          href={`https://www.google.com/search?q=${encodeURIComponent(day.resource)}`} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="reference-link" 
+                          style={{ 
+                            color: 'var(--accent-purple)', 
+                            fontWeight: 600, 
+                            textDecoration: 'underline', 
+                            cursor: 'pointer' 
+                          }}
+                        >
+                          {day.resource}
+                        </a>
                       </div>
                     </div>
 

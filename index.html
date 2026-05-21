@@ -6,6 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="GATEPrep Nexus - A premium, completely free, self-updating exam preparation portal for GATE Computer Science (CS) and Data Science & AI (DA) tracks, featuring structured syllabus checklists, interactive practice simulators, formulas, active recall flashcards, and an AI prep advisor." />
     <title>GATEPrep Nexus - GATE CS & DA Preparation Portal</title>
+    <!-- MathJax for rendering mathematical LaTeX typesettings in dynamic question page content -->
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['\\(', '\\)'], ['$', '$']],
+          displayMath: [['\\[', '\\]'], ['$$', '$$']],
+          processEscapes: true
+        }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
   <body>
     <div id="root"></div>

@@ -105,6 +105,7 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+  cursor: pointer;
 }
 
 button, input, select, textarea {
@@ -782,6 +783,7 @@ h2 {
     white-space: normal !important;
     flex-wrap: wrap !important;
     overflow-x: visible !important;
+    min-height: auto !important;
   }
   .virtual-calc-trigger {
     width: 44px !important;
@@ -814,5 +816,427 @@ h2 {
     width: auto !important;
     max-width: calc(100% - 24px) !important;
   }
+}
+
+
+/* Dynamic IITM Q-Bank Custom Styles & Keyframe Overrides */
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-down {
+  animation: slideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Parsed HTML content resets & overrides */
+.dynamic-q-content p, .solution-html-container p {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.dynamic-q-content ul, .solution-html-container ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  space-y: 0.25rem;
+}
+
+.dynamic-q-content ol, .solution-html-container ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.dynamic-q-content li, .solution-html-container li {
+  margin-bottom: 0.25rem;
+}
+
+.dynamic-q-content table, .solution-html-container table {
+  width: 100%;
+  margin: 1rem 0;
+  border-collapse: collapse;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.dynamic-q-content th, .solution-html-container th,
+.dynamic-q-content td, .solution-html-container td {
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dynamic-q-content th, .solution-html-container th {
+  background: rgba(255, 255, 255, 0.04);
+  font-weight: 600;
+  color: var(--accent-purple-glow);
+  text-align: left;
+}
+
+.dynamic-q-content code, .solution-html-container code {
+  font-family: var(--font-mono);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  color: #10b981; /* accent-emerald */
+  font-size: 0.9em;
+}
+
+.dynamic-q-content pre, .solution-html-container pre {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.dynamic-q-content pre code, .solution-html-container pre code {
+  background: transparent !important;
+  padding: 0 !important;
+  color: #10b981 !important;
+  font-size: 0.85rem !important;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   IITM Q-Bank UI Classes
+   ========================================================================== */
+.qbank-header-banner {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(0, 0, 0, 0.4), rgba(16, 185, 129, 0.04));
+  padding: 32px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 24px;
+}
+
+.qbank-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .qbank-grid {
+    grid-template-columns: 320px 1fr;
+  }
+}
+
+.qbank-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.qbank-panel {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: var(--shadow-glass);
+}
+
+.qbank-category-list {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  max-width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .qbank-category-list {
+    flex-direction: column;
+    overflow-x: visible;
+    padding-bottom: 0;
+    max-height: 380px;
+    overflow-y: auto;
+  }
+}
+
+.qbank-category-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  font-size: 0.85rem;
+}
+
+@media (min-width: 1024px) {
+  .qbank-category-btn {
+    white-space: normal;
+    font-size: 0.9rem;
+  }
+}
+
+.qbank-category-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  border-color: var(--border-color-hover);
+}
+
+.qbank-category-btn.active {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.35);
+  color: #c084fc;
+}
+
+.qbank-category-badge {
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+}
+
+.qbank-category-btn.active .qbank-category-badge {
+  background: rgba(139, 92, 246, 0.25);
+  color: #e9d5ff;
+}
+
+.qbank-questions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.qbank-question-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.qbank-question-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--border-color-hover);
+}
+
+.qbank-question-btn.selected {
+  background: rgba(139, 92, 246, 0.08);
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.qbank-status-badge {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.75rem;
+}
+
+.qbank-status-solved {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.qbank-status-partial {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--accent-amber);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  font-weight: bold;
+}
+
+.qbank-status-wrong {
+  background: rgba(244, 63, 94, 0.15);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.3);
+  font-weight: bold;
+}
+
+.qbank-status-unattempted {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.8rem;
+}
+
+/* Question canvas area styling */
+.qbank-canvas {
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.qbank-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.qbank-option-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.qbank-option-btn:not(:disabled):hover {
+  background: var(--bg-glass-hover);
+  border-color: var(--border-color-hover);
+}
+
+.qbank-option-btn.selected {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.15);
+}
+
+.qbank-option-btn.correct-selected {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #34d399;
+}
+
+.qbank-option-btn.wrong-selected {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: rgba(244, 63, 94, 0.5);
+  color: #fb7185;
+}
+
+.qbank-option-btn.correct-unselected {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #34d399;
+}
+
+.qbank-option-btn:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.qbank-option-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  transition: all var(--transition-fast);
+  background: rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+
+.qbank-option-indicator.radio {
+  border-radius: 50%;
+}
+
+.qbank-option-btn.selected .qbank-option-indicator {
+  background: var(--accent-purple);
+  border-color: var(--accent-purple);
+  color: #ffffff;
+}
+
+.qbank-option-btn.correct-selected .qbank-option-indicator,
+.qbank-option-btn.correct-unselected .qbank-option-indicator {
+  background: var(--accent-emerald);
+  border-color: var(--accent-emerald);
+  color: #ffffff;
+}
+
+.qbank-option-btn.wrong-selected .qbank-option-indicator {
+  background: var(--accent-rose);
+  border-color: var(--accent-rose);
+  color: #ffffff;
+}
+
+.qbank-nat-input {
+  width: 100%;
+  max-width: 280px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  transition: all var(--transition-fast);
+}
+
+.qbank-nat-input:focus {
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 10px var(--accent-purple-glow);
+}
+
+.qbank-nat-input:disabled {
+  opacity: 0.75;
+  background: rgba(0, 0, 0, 0.15);
+  cursor: default;
+}
+
+/* Styling for links inside dynamically rendered QBank content */
+.dynamic-q-content a,
+.solution-html-container a,
+.parsed-link {
+  color: var(--accent-purple) !important;
+  text-decoration: underline !important;
+  cursor: pointer !important;
+  font-weight: 600;
+  transition: all var(--transition-fast) ease;
+}
+
+.dynamic-q-content a:hover,
+.solution-html-container a:hover,
+.parsed-link:hover {
+  color: #c084fc !important;
+  opacity: 0.9;
 }
 
