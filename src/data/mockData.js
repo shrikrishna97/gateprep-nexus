@@ -675,6 +675,22 @@ export function parseIITMQuestionPage(htmlText, relativePath) {
       a.classList.add('parsed-link');
     }
   });
+
+  // Rewrite all image src attributes to be absolute pointing to IITM site
+  mainContent.querySelectorAll('img').forEach(img => {
+    let src = img.getAttribute('src');
+    if (src) {
+      if (!src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('data:')) {
+        try {
+          const baseUrl = `https://iitmbsc-student-projects.github.io/gate-da/${relativePath}`;
+          const absoluteUrl = new URL(src, baseUrl).href;
+          img.setAttribute('src', absoluteUrl);
+        } catch (e) {
+          console.error('Error resolving image src:', e);
+        }
+      }
+    }
+  });
   
   // Extract categories if any
   const categories = [];
