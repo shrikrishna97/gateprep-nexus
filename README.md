@@ -1,16 +1,80 @@
-# React + Vite
+# 🎓 GATEPrep Nexus
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![Vercel Deployment](https://img.shields.io/badge/deployed-vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://gateprep-nexus.vercel.app/)
+[![React Version](https://img.shields.io/badge/react-v19.2-61dafb?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![Vite Bundler](https://img.shields.io/badge/vite-v8.0-646cff?style=for-the-badge&logo=vite&logoColor=white)](https://vite.dev/)
+[![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)](LICENSE)
 
-Currently, two official plugins are available:
+**GATEPrep Nexus** is a state-of-the-art, premium client-side exam preparation portal designed for **GATE Computer Science & IT (CS)** and **Data Science & AI (DA)** aspirants. Built entirely using React 19, Vite 8, and Vanilla CSS with a gorgeous dark glassmorphic interface, it offers complete offline autonomy, zero server costs, and 100% private browser-staged persistence.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+🌐 **Live URL:** [gateprep-nexus.vercel.app](https://gateprep-nexus.vercel.app/)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ⚡ Core Features
 
-## Expanding the ESLint configuration
+- **🎯 Interactive Track Onboarding:** Custom avatar designer, personalized name configuration, and syllabus focus selector (CS, DA, or Dual preparation).
+- **🔄 Dynamic Exam Rollover Engine:** Timezone-safe date engine that automatically calculates the official GATE start day (first Saturday of February) for any target year. When the exam completes, the system dynamically rolls over all milestones, IIT organizing institute mappings (IIT Guwahati, Madras, Bombay, etc.), and study calendars to the subsequent year automatically.
+- **📊 Syllabus Progress Trackers:** Complete breakdown of official syllabi (Engineering Mathematics, Core subjects, and General Aptitude) with direct links to free curated video resources, updating your completion rings in real-time.
+- **📅 Dynamic Day-by-Day Scheduler:** Generates a customized, progressive study plan mapped across your remaining days to the next exam, allowing you to log and track your status.
+- **📝 Full-Screen Mock Simulator:** Realistic exam simulator that replicates official GATE constraints. Features interactive MCQs, MSQs, and NATs (Numerical Answer Type with decimal inputs), color-coded question state trackers, and a countdown auto-submit timer.
+- **🧮 Integrated Scientific Calculator:** Global floating algebraic calculator featuring full trigonometric, logarithmic, logarithmic bases, and scientific functions mapped to standard GATE parameters.
+- **🧠 3D Active Recall Decks:** High-fidelity 3D flippable flashcard stages built using CSS perspective properties. Easily sort concepts by memory strength (Need Review vs. Mastered) with automatic percentage feedback.
+- **📋 Searchable unicode Formulas:** A searchable, fully mathematical formula list using clean, native Unicode representation (`⟹`, `∑`, `∏`, sub/superscripts) for instant legibility without heavy external typesetting libraries.
+- **🤖 Strategic AI Advisor Chatbot:** Pre-loaded strategic advisor trained on exam blueprints, topic weightage, multi-pass review strategies, safety thresholds, and textbook references.
+- **🌓 Adaptive Theme Engine:** Double-gradient glassmorphism styling with fully responsive desktop, tablet, and mobile layouts. Seamlessly toggle between dark and light themes.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Technology Stack
+
+- **Frontend Library:** [React 19](https://react.dev/) (Hooks, dynamic Context state, refs)
+- **Asset Bundler:** [Vite 8](https://vite.dev/) (Ultra-fast esbuild compiler: builds in **<600ms**)
+- **Styling System:** Vanilla CSS3 with global Custom Properties (CSS variables), glassmorphism styles, and GPU-accelerated keyframe animations.
+- **Persistence:** High-reliability browser `localStorage` syncing.
+- **Hosting Engine:** Serverless edge hosting via [Vercel](https://vercel.com).
+
+---
+
+## 🚀 Getting Started (Run Locally)
+
+Ensure you have [Node.js](https://nodejs.org/) (version 18 or higher) installed on your system.
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/shrikrishna97/gateprep-nexus.git
+cd gateprep-nexus
+```
+
+### 2. Install Dependencies
+Install all package configurations safely:
+```bash
+npm install
+```
+
+### 3. Run Development Server
+Start the local hot-reload web server:
+```bash
+npm run dev
+```
+Open your browser and navigate to **`http://localhost:5173`**.
+
+### 4. Build for Production
+Bundle and optimize all CSS and JavaScript assets into compressed, static chunks:
+```bash
+npm run build
+```
+Verify files inside the local `/dist` output directory.
+
+---
+
+## 🔒 Security & Client Autonomy
+
+* **Data Ownership:** Your study habits, checklist progress, calendar status, sticky notes, and mock scores are kept **100% private** inside your personal browser sandbox. No user data ever leaves your device.
+* **Serverless Stability:** Because there are no backend databases or active servers, this portal has **zero downtime risks** and zero unexpected hosting costs. It is completely free to deploy and maintain forever.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
