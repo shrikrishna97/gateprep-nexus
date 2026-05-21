@@ -204,7 +204,10 @@ const Dashboard = () => {
                   }}>
                     📖 Recommended Lecture: <span 
                       style={{ color: 'var(--accent-purple)', fontWeight: 600, cursor: 'pointer', textDecoration: 'underline' }}
-                      onClick={() => alert(`Redirecting to free course source:\n"${todayTask.resource}"`)}
+                      onClick={() => {
+                        const query = encodeURIComponent(todayTask.resource);
+                        window.open(`https://www.google.com/search?q=${query}`, '_blank');
+                      }}
                     >
                       {todayTask.resource}
                     </span>

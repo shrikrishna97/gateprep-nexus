@@ -735,11 +735,11 @@ h2 {
     --sidebar-width: 0px;
   }
   .app-sidebar {
+    width: 260px !important;
     transform: translateX(-100%);
   }
   .app-sidebar.mobile-open {
     transform: translateX(0);
-    --sidebar-width: 260px;
   }
   .main-content {
     margin-left: 0 !important;
@@ -748,3 +748,71 @@ h2 {
     padding: 16px 20px 40px;
   }
 }
+
+/* Medium Tablets & Mobile Screens (<= 768px) */
+@media (max-width: 768px) {
+  .header-welcome-text {
+    display: none !important;
+  }
+  .header-user-info {
+    display: none !important;
+  }
+}
+
+/* Small Tablets & Large Phones (<= 640px) */
+@media (max-width: 640px) {
+  .app-header {
+    padding: 0 16px !important;
+  }
+  .header-page-title {
+    font-size: 1.2rem !important;
+  }
+  .header-track-badge {
+    display: none !important;
+  }
+  .syllabus-track-tabs {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  .syllabus-track-btn {
+    width: 100% !important;
+    text-align: center !important;
+  }
+  .advisor-suggestions-container {
+    white-space: normal !important;
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+  }
+  .virtual-calc-trigger {
+    width: 44px !important;
+    height: 44px !important;
+    bottom: 16px !important;
+    right: 16px !important;
+  }
+  .virtual-calculator-window {
+    bottom: 72px !important;
+    right: 16px !important;
+  }
+}
+
+/* Small Phones (<= 480px) */
+@media (max-width: 480px) {
+  .header-page-title {
+    font-size: 1.05rem !important;
+  }
+  .page-container {
+    padding: 12px 12px 32px !important;
+  }
+}
+
+/* Micro Devices (<= 400px) */
+@media (max-width: 400px) {
+  .virtual-calculator-window {
+    left: 12px !important;
+    right: 12px !important;
+    bottom: 76px !important;
+    width: auto !important;
+    max-width: calc(100% - 24px) !important;
+  }
+}
+

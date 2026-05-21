@@ -364,8 +364,9 @@ Thank you for your question! To help you achieve a high rank, here is my recomme
       display: 'grid',
       gridTemplateColumns: '1fr',
       gap: '24px',
-      maxHeight: 'calc(100vh - var(--header-height) - 100px)',
-      height: '680px'
+      height: 'calc(100vh - var(--header-height) - 60px)',
+      maxHeight: '680px',
+      minHeight: '420px'
     }} className="advisor-chat-layout">
       
       {/* Messaging Box container */}
@@ -498,7 +499,7 @@ Thank you for your question! To help you achieve a high rank, here is my recomme
           backgroundColor: 'rgba(0,0,0,0.05)',
           whiteSpace: 'nowrap',
           scrollbarWidth: 'none'
-        }} className="no-scrollbar">
+        }} className="no-scrollbar advisor-suggestions-container">
           {SUGGESTIONS.map((s) => (
             <button
               key={s.label}

@@ -39,10 +39,9 @@ const Auth = () => {
       zIndex: 1000,
       padding: '20px'
     }}>
-      <div className="glass-panel" style={{
+      <div className="glass-panel auth-card" style={{
         maxWidth: '460px',
         width: '100%',
-        padding: '40px 32px',
         textAlign: 'center',
         boxShadow: 'var(--shadow-lg)',
         border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -106,9 +105,8 @@ const Auth = () => {
           {/* Avatar Picker */}
           <div className="form-group" style={{ marginBottom: '32px' }}>
             <label className="form-label">Choose Your Avatar</label>
-            <div style={{
+            <div className="auth-avatar-grid" style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(8, 1fr)',
               gap: '8px',
               marginTop: '4px'
             }}>
@@ -150,10 +148,24 @@ const Auth = () => {
       </div>
 
       <style>{`
+        .auth-card {
+          padding: 40px 32px;
+        }
+        .auth-avatar-grid {
+          grid-template-columns: repeat(8, 1fr);
+        }
         .avatar-btn:hover {
           transform: translateY(-2px);
           border-color: var(--accent-purple) !important;
           background-color: var(--bg-glass-hover) !important;
+        }
+        @media (max-width: 480px) {
+          .auth-card {
+            padding: 24px 16px;
+          }
+          .auth-avatar-grid {
+            grid-template-columns: repeat(4, 1fr);
+          }
         }
       `}</style>
     </div>

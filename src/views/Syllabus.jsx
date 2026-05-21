@@ -71,17 +71,17 @@ const Syllabus = () => {
       </div>
 
       {/* SECTION 2: Track Selectors Tabs */}
-      <div style={{ display: 'flex', gap: '12px' }}>
+      <div className="syllabus-track-tabs" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
         <button
           onClick={() => setActiveSyllabusTrack('CS')}
-          className={`btn ${activeSyllabusTrack === 'CS' ? 'btn-primary' : 'btn-secondary'}`}
+          className={`btn ${activeSyllabusTrack === 'CS' ? 'btn-primary' : 'btn-secondary'} syllabus-track-btn`}
           style={{ padding: '10px 24px', fontSize: '0.85rem' }}
         >
           💻 Computer Science (CS) Syllabus
         </button>
         <button
           onClick={() => setActiveSyllabusTrack('DA')}
-          className={`btn ${activeSyllabusTrack === 'DA' ? 'btn-accent-blue' : 'btn-secondary'}`}
+          className={`btn ${activeSyllabusTrack === 'DA' ? 'btn-accent-blue' : 'btn-secondary'} syllabus-track-btn`}
           style={{ padding: '10px 24px', fontSize: '0.85rem' }}
         >
           📊 Data Science & AI (DA) Syllabus
@@ -250,7 +250,8 @@ const Syllabus = () => {
                                 textDecoration: 'underline'
                               }}
                               onClick={() => {
-                                alert(`Opening free course: "${topic.resource}"\n(Direct link simulation inside student preparation environment)`);
+                                const query = encodeURIComponent(topic.resource);
+                                window.open(`https://www.google.com/search?q=${query}`, '_blank');
                               }}
                               title="Click to access free lectures"
                             >

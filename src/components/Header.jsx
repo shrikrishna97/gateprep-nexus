@@ -33,10 +33,10 @@ const Header = ({ onMobileNavToggle }) => {
 
       {/* Page Title */}
       <div>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 700, margin: 0 }}>
+        <h1 className="header-page-title" style={{ fontSize: '1.5rem', fontWeight: 700, margin: 0 }}>
           {getPageTitle()}
         </h1>
-        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: 0 }}>
+        <p className="header-welcome-text" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: 0 }}>
           {user ? `Welcome back, ${user.name}!` : 'Prepare smarter for the GATE exam'}
         </p>
       </div>
@@ -48,7 +48,7 @@ const Header = ({ onMobileNavToggle }) => {
           <span className={`badge ${
             user.track === 'CS' ? 'badge-purple' : 
             user.track === 'DA' ? 'badge-blue' : 'badge-cyan'
-          }`} style={{ fontSize: '0.7rem' }}>
+          } header-track-badge`} style={{ fontSize: '0.7rem' }}>
             GATE {user.track} {user.track === 'Dual' ? 'Track' : ''}
           </span>
 
@@ -78,7 +78,7 @@ const Header = ({ onMobileNavToggle }) => {
             <div className="header-user-avatar">
               {user.avatar}
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+            <div className="header-user-info" style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
               <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>{user.name}</span>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Aspirant</span>
             </div>

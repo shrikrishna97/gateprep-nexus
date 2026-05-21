@@ -210,7 +210,7 @@ export const AppProvider = ({ children }) => {
     for (let i = 0; i < p1Count; i++) {
       const dayDate = new Date(start);
       dayDate.setDate(start.getDate() + i);
-      const dateStr = dayDate.toISOString().split('T')[0];
+      const dateStr = formatDateLocal(dayDate);
 
       // Rotate through subjects
       const currentSubject = subjects[subjectIndex % subjects.length];
@@ -241,7 +241,7 @@ export const AppProvider = ({ children }) => {
     for (let i = 0; i < p2Count; i++) {
       const dayDate = new Date(start);
       dayDate.setDate(start.getDate() + p1Count + i);
-      const dateStr = dayDate.toISOString().split('T')[0];
+      const dateStr = formatDateLocal(dayDate);
 
       // Rotate through subjects for secondary revision
       const currentSubject = subjects[i % subjects.length];
@@ -265,7 +265,7 @@ export const AppProvider = ({ children }) => {
     for (let i = 0; i < p3Count; i++) {
       const dayDate = new Date(start);
       dayDate.setDate(start.getDate() + p1Count + p2Count + i);
-      const dateStr = dayDate.toISOString().split('T')[0];
+      const dateStr = formatDateLocal(dayDate);
 
       const isMockDay = i % 3 === 0;
 
@@ -339,7 +339,7 @@ export const AppProvider = ({ children }) => {
       paperName,
       score,
       totalQuestions,
-      date: new Date().toISOString().split('T')[0]
+      date: formatDateLocal(new Date())
     };
     setMockHistory(prev => [newRecord, ...prev]);
   };
@@ -350,7 +350,7 @@ export const AppProvider = ({ children }) => {
       id: 'note-' + Date.now(),
       text,
       color: color || '#fef08a',
-      date: new Date().toISOString().split('T')[0]
+      date: formatDateLocal(new Date())
     };
     setStickyNotes(prev => [newNote, ...prev]);
   };
