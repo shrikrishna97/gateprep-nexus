@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useApp } from '../AppContext';
 import { 
   IITM_QBANK_OFFLINE_SEED, 
   parseIITMSidebar, 
@@ -6,6 +7,7 @@ import {
 } from '../data/mockData';
 
 export default function CommunityQBank() {
+  const { user } = useApp();
   const BASE_URL = 'https://iitmbsc-student-projects.github.io/gate-da/';
   
   // Scraper & Sync State
@@ -41,17 +43,17 @@ export default function CommunityQBank() {
   const [activeTab, setActiveTab] = useState('all');
 
   const categoriesList = [
-    { id: 'all', name: 'All Categories' },
-    { id: 'linear_algebra', name: 'Linear Algebra' },
-    { id: 'prob_stats', name: 'Probability & Stats' },
-    { id: 'machine_learning', name: 'Machine Learning' },
-    { id: 'calculus', name: 'Calculus & Optimization' },
-    { id: 'dbms', name: 'Database Management' },
-    { id: 'pdsa', name: 'Programming & DSA' },
-    { id: 'ai', name: 'Artificial Intelligence' },
-    { id: 'aptitude', name: 'General Aptitude' },
-    { id: 'gate_2025', name: 'GATE-2025 Past Paper' },
-    { id: 'gate_2024', name: 'GATE-2024 Past Paper' }
+    { id: 'all', name: 'All Categories', type: 'all' },
+    { id: 'linear_algebra', name: 'Linear Algebra', type: 'shared' },
+    { id: 'prob_stats', name: 'Probability & Stats', type: 'shared' },
+    { id: 'machine_learning', name: 'Machine Learning', type: 'da_only' },
+    { id: 'calculus', name: 'Calculus & Optimization', type: 'shared' },
+    { id: 'dbms', name: 'Database Management', type: 'shared' },
+    { id: 'pdsa', name: 'Programming & DSA', type: 'shared' },
+    { id: 'ai', name: 'Artificial Intelligence', type: 'da_only' },
+    { id: 'aptitude', name: 'General Aptitude', type: 'shared' },
+    { id: 'gate_2025', name: 'GATE-2025 Past Paper', type: 'da_only' },
+    { id: 'gate_2024', name: 'GATE-2024 Past Paper', type: 'da_only' }
   ];
 
   // 1. Initial crawler to fetch the sidebar links index
@@ -352,6 +354,73 @@ export default function CommunityQBank() {
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.6', maxWidth: '680px', margin: 0 }}>
               Explore 300+ community-curated GATE Data Science & AI practice questions. Every question, choice, and detailed mathematical solution is synced directly in real-time from the official IITM project portal.
             </p>
+
+            {/* Syllabus Overlap Advisor Banner */}
+            {user?.track === 'CS' && (
+              <div style={{
+                marginTop: '16px',
+                padding: '12px 16px',
+                backgroundColor: 'rgba(139, 92, 246, 0.04)',
+                border: '1px solid rgba(139, 92, 246, 0.15)',
+                borderRadius: '8px',
+                fontSize: '0.8rem',
+                color: 'var(--text-secondary)',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '10px',
+                lineHeight: '1.5',
+                maxWidth: '680px'
+              }}>
+                <span style={{ fontSize: '1.1rem', lineHeight: '1' }}>🌟</span>
+                <div>
+                  <strong style={{ color: 'var(--accent-purple)' }}>GATE CS Overlap Alert:</strong> As a Computer Science candidate, focus on the categories marked with <span style={{ color: 'var(--accent-emerald)', fontWeight: 600 }}>🌟 (Shared)</span>. Linear Algebra, Probability, Calculus, DBMS, DSA, and General Aptitude are **100% applicable** to your syllabus. Machine Learning, AI, and past DA papers are outside the GATE CS scope.
+                </div>
+              </div>
+            )}
+
+            {user?.track === 'Dual' && (
+              <div style={{
+                marginTop: '16px',
+                padding: '12px 16px',
+                backgroundColor: 'rgba(16, 185, 129, 0.04)',
+                border: '1px solid rgba(16, 185, 129, 0.15)',
+                borderRadius: '8px',
+                fontSize: '0.8rem',
+                color: 'var(--text-secondary)',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '10px',
+                lineHeight: '1.5',
+                maxWidth: '680px'
+              }}>
+                <span style={{ fontSize: '1.1rem', lineHeight: '1' }}>🔥</span>
+                <div>
+                  <strong style={{ color: 'var(--accent-emerald)' }}>Dual CS & DA Track:</strong> Excellent! You can practice **every single question** in this bank. The categories marked with <span style={{ color: 'var(--accent-emerald)', fontWeight: 600 }}>🌟 (Shared)</span> represent high-value core subjects shared across both CS and DA examinations.
+                </div>
+              </div>
+            )}
+
+            {user?.track === 'DA' && (
+              <div style={{
+                marginTop: '16px',
+                padding: '12px 16px',
+                backgroundColor: 'rgba(59, 130, 246, 0.04)',
+                border: '1px solid rgba(59, 130, 246, 0.15)',
+                borderRadius: '8px',
+                fontSize: '0.8rem',
+                color: 'var(--text-secondary)',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '10px',
+                lineHeight: '1.5',
+                maxWidth: '680px'
+              }}>
+                <span style={{ fontSize: '1.1rem', lineHeight: '1' }}>📊</span>
+                <div>
+                  <strong style={{ color: 'var(--accent-blue)' }}>GATE DA Syllabus Focus:</strong> All questions in this bank are highly relevant to your exam. The categories marked with <span style={{ color: 'var(--accent-emerald)', fontWeight: 600 }}>🌟 (Shared)</span> are also part of the GATE CS syllabus (making them great for cross-referencing CS practice papers).
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Stats widget */}
@@ -415,15 +484,46 @@ export default function CommunityQBank() {
                 if (stats.total === 0 && cat.id !== 'all') return null;
                 
                 const isSelected = activeTab === cat.id;
+                const isShared = cat.type === 'shared';
+                const isDaOnly = cat.type === 'da_only';
                 
                 return (
                   <button
                     key={cat.id}
                     onClick={() => setActiveTab(cat.id)}
                     className={`qbank-category-btn ${isSelected ? 'active' : ''}`}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: '8px',
+                      width: '100%'
+                    }}
                   >
-                    <span>{cat.name}</span>
-                    <span className="qbank-category-badge">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden' }}>
+                      {cat.id !== 'all' && (
+                        <span 
+                          style={{
+                            fontSize: '0.72rem',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            opacity: isSelected ? 1 : 0.7
+                          }}
+                          title={isShared ? 'Shared Category (Tested in both GATE CS & DA)' : 'DA-Specific Category (Not tested in GATE CS)'}
+                        >
+                          {isShared ? '🌟' : '🤖'}
+                        </span>
+                      )}
+                      <span style={{ 
+                        overflow: 'hidden', 
+                        textOverflow: 'ellipsis', 
+                        whiteSpace: isSelected ? 'normal' : 'nowrap',
+                        fontSize: '0.85rem'
+                      }}>
+                        {cat.name}
+                      </span>
+                    </div>
+                    <span className="qbank-category-badge" style={{ flexShrink: 0 }}>
                       {stats.solved}/{stats.total}
                     </span>
                   </button>

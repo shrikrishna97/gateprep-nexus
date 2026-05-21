@@ -124,3 +124,40 @@ In this phase, we completed the self-testing and advisory dashboards.
 2. **`useContext`:** Provides global access to the `AppContext` from any view without passing props manually.
 3. **`useEffect`:** Handles asynchronous operations, timers, and syncing states directly to `localStorage` on state updates.
 4. **`useRef`:** Accesses raw DOM nodes directly (e.g. scrolling the chat container, focusing input fields).
+
+---
+
+## 🛰️ Phase 13-17: Dynamic Scraper Engine, LaTeX MathJax, & Syllabus Overlap Analysis
+
+In these advanced phases, we integrated real-time external data crawling, MathJax LaTeX math rendering, MSQ partial correctness grading, and track-specific overlap guidelines.
+
+### 1. Hybrid Live-Sync Scraper Engine: `src/views/CommunityQBank.jsx`
+- **Dynamic Crawling Pattern:** The browser fetches the index file from the official IITM student project portal. Using standard browser `DOMParser`, it extracts category nodes and relative URLs.
+- **On-Demand Loading:** Question files are crawled and compiled on-the-fly when selected. If a CORS barrier is hit or the candidate is offline, the scraper automatically falls back to a curated offline seed database of 10 high-fidelity questions, showing a yellow notice bulletin.
+- **Dynamic URL Resolution:** Pre-compiled scripts scan all parsed relative link nodes (e.g. images, reference links) and prepends the absolute domain URL (`https://iitmbsc-student-projects.github.io/gate-da/`) so all links resolve successfully in the client browser with `target="_blank"`.
+
+### 2. MathJax LaTeX Typesetting Integration
+- **Script Injection:** We dynamically configure and load the MathJax v3 script inside `index.html`, disabling Quarto standard ignore rules.
+- **Reactive Hooks:** Whenever a new question is loaded, an option selected, or grading verified, the `typesetPromise()` method is called reactively in React's rendering flow. This guarantees that raw LaTeX expressions (`\(...\)` and `\[...\]`) convert instantly to crisp vector equations in the browser.
+
+### 3. Multiple Select (MSQ) Partial Grading Engine
+- **Partial Correctness Logic:** Unlike traditional binary grading, multiple-select questions (MSQs) in our portal check whether the student's selected choices form a non-empty subset of the correct options, with *zero* incorrect options selected.
+- **Visual Feedback:** When this subset condition is satisfied, the exam simulator outputs an amber/yellow warning banner: `"Partially Correct!"` and records a `"partial"` progress key to highlight partial concept mastery.
+
+### 4. CS vs. DA Syllabus Overlap Analysis
+Mathematics, programming, and databases form a massive strategic overlap (~35% of overall marks) between **GATE CS** and **GATE DA**:
+
+| Category ID | Subject Name | CS Relevance | Syllabus Overlap Details |
+| :--- | :--- | :--- | :--- |
+| `linear_algebra` | Linear Algebra | 🌟 High (Shared) | Matrices, eigenvalues, eigenvectors, systems of equations are identical. |
+| `prob_stats` | Probability & Stats | 🌟 High (Shared) | Bayes theorem, random variables, and expectation are identical. (DA has advanced inference). |
+| `calculus` | Calculus & Optimization | 🌟 High (Shared) | Limits, continuity, derivatives, maxima/minima are shared. (DA adds multivariable optimization). |
+| `dbms` | Database Management | 🌟 High (Shared) | Normal forms, SQL queries, ER modeling, relational algebra are 100% identical. |
+| `pdsa` | Programming & DSA | 🌟 High (Shared) | Searching, sorting, stack/queue/list, trees, graph BFS/DFS are identical. |
+| `aptitude` | General Aptitude | 🌟 High (Shared) | Quantitative and verbal reasoning sections are 100% identical. |
+| `machine_learning`| Machine Learning | 🤖 DA Specific | Not tested in standard GATE CS. |
+| `ai` | Artificial Intelligence | 🤖 DA Specific | Not tested in standard GATE CS. |
+
+* **Interactive Badge system:** The `CommunityQBank` view includes custom warning notices tailored to the candidate's active track (CS, DA, or Dual).
+* **Category Indicators:** Each category selector button renders a visual indicator (`🌟` for Shared or `🤖` for DA Only) to guide CS candidates dynamically to 100% applicable practice materials.
+
