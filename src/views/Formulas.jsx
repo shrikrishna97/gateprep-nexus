@@ -13,14 +13,17 @@ const Formulas = () => {
 
   // Flashcards states
   const [flashcards, setFlashcards] = useState(() => {
-    // Try to load flashcard progress from localStorage
-    const saved = localStorage.getItem(`gate_flashcards_${user?.email || 'default'}`);
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        return FLASHCARDS_DATA.map(f => ({ ...f, status: 'learning' }));
+    try {
+      // Try to load flashcard progress safely from localStorage
+      const saved = localStorage.getItem(`gate_flashcards_${user?.email || 'default'}`);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
       }
+    } catch (e) {
+      console.warn('GATEPrep Nexus Flashcards Parse Error:', e);
     }
     return FLASHCARDS_DATA.map(f => ({ ...f, status: 'learning' })); // 'learning' | 'mastered'
   });
@@ -33,17 +36,6 @@ const Formulas = () => {
   useEffect(() => {
     localStorage.setItem(`gate_flashcards_${user?.email || 'default'}`, JSON.stringify(flashcards));
   }, [flashcards, user]);
-
-  // Typeset mathematical LaTeX equations via MathJax dynamically on changes
-  useEffect(() => {
-    if (window.MathJax && window.MathJax.typesetPromise) {
-      const timer = setTimeout(() => {
-        window.MathJax.typesetPromise()
-          .catch(err => console.warn('GATEPrep Nexus MathJax Typesetting Warning:', err));
-      }, 60);
-      return () => clearTimeout(timer);
-    }
-  }, [activeSubTab, selectedCategory, formulaSearch, visibleCards, currentCardIndex, isFlipped]);
 
   const handleCopyFormula = (text, idx) => {
     navigator.clipboard.writeText(text);
@@ -100,7 +92,30 @@ const Formulas = () => {
   };
 
   const visibleCards = getFilteredFlashcards();
-  const currentCard = visibleCards[currentCardIndex];
+  const currentCard = visibleCards[currentCardIndex] || {
+    id: '',
+    category: '',
+    question: '',
+    answer: '',
+    status: ''
+  };
+
+  // Typeset mathematical LaTeX equations via MathJax dynamically on changes
+  useEffect(() => {
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      const timer = setTimeout(() => {
+        try {
+          // Clear typesetting cache to force re-evaluation of newly mounted DOM nodes
+          window.MathJax.typesetClear();
+          window.MathJax.typesetPromise()
+            .catch(err => console.warn('GATEPrep Nexus MathJax Typesetting Warning:', err));
+        } catch (e) {
+          console.warn('GATEPrep Nexus MathJax error:', e);
+        }
+      }, 80);
+      return () => clearTimeout(timer);
+    }
+  }, [activeSubTab, selectedCategory, formulaSearch, visibleCards.length, currentCardIndex, isFlipped]);
 
   // Adjust card index when list size changes
   useEffect(() => {
@@ -131,7 +146,7 @@ const Formulas = () => {
   };
 
   const masteredCount = flashcards.filter(c => c.status === 'mastered').length;
-  const masteryPercent = Math.round((masteredCount / flashcards.length) * 100);
+  const masteryPercent = flashcards.length > 0 ? Math.round((masteredCount / flashcards.length) * 100) : 0;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>

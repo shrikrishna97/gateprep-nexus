@@ -2,6 +2,77 @@ import React, { useState, useEffect } from 'react';
 import { useApp } from '../AppContext';
 import { MOCK_TESTS } from '../data/mockData';
 
+const Timer = ({ initialTime, onTimeUp }) => {
+  const [secondsLeft, setSecondsLeft] = useState(initialTime);
+
+  useEffect(() => {
+    setSecondsLeft(initialTime);
+  }, [initialTime]);
+
+  useEffect(() => {
+    if (secondsLeft <= 0) {
+      onTimeUp();
+      return;
+    }
+    const timer = setInterval(() => {
+      setSecondsLeft(prev => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [secondsLeft, onTimeUp]);
+
+  const formatTime = (secs) => {
+    const mins = Math.floor(secs / 60);
+    const remainingSecs = secs % 60;
+    return `${mins.toString().padStart(2, '0')}:${remainingSecs.toString().padStart(2, '0')}`;
+  };
+
+  return (
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      fontSize: '1.15rem',
+      fontWeight: 800,
+      color: secondsLeft < 180 ? 'var(--accent-rose)' : 'var(--text-primary)'
+    }}>
+      <span>⏱️</span>
+      <span>{formatTime(secondsLeft)}</span>
+    </div>
+  );
+};
+
+const QuestionText = React.memo(({ html }) => {
+  return (
+    <p 
+      style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '28px', lineHeight: 1.5 }}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+});
+
+const OptionRow = React.memo(({ opt, oIdx, isSelected, onClick }) => {
+  return (
+    <div 
+      onClick={onClick}
+      style={{
+        padding: '14px 20px',
+        border: `1px solid ${isSelected ? 'var(--accent-purple)' : 'var(--border-color)'}`,
+        backgroundColor: isSelected ? 'var(--accent-purple-glow)' : 'transparent',
+        borderRadius: 'var(--radius-md)',
+        fontSize: '0.9rem',
+        cursor: 'pointer',
+        transition: 'all 0.15s ease'
+      }}
+      className="option-choice-row"
+    >
+      <span style={{ fontWeight: 700, marginRight: '12px', color: isSelected ? 'var(--accent-purple)' : 'var(--text-muted)' }}>
+        {String.fromCharCode(65 + oIdx)}.
+      </span>
+      <span dangerouslySetInnerHTML={{ __html: opt }} />
+    </div>
+  );
+});
+
 const Practice = () => {
   const { user, mockHistory, addMockScore } = useApp();
   
@@ -11,43 +82,33 @@ const Practice = () => {
   const [currentQIndex, setCurrentQIndex] = useState(0);
   const [answers, setAnswers] = useState({}); // { [qId]: index | string }
   const [markedForReview, setMarkedForReview] = useState({}); // { [qId]: boolean }
-  const [secondsLeft, setSecondsLeft] = useState(0);
   const [testResult, setTestResult] = useState(null); // stores result report
 
-  // Countdown timer effect
-  useEffect(() => {
-    if (!testMode || secondsLeft <= 0) {
-      if (testMode && secondsLeft === 0) {
-        handleSubmitTest();
-      }
-      return;
-    }
-
-    const timer = setInterval(() => {
-      setSecondsLeft(prev => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [testMode, secondsLeft]);
+  const currentQuestionType = activeTest?.questions[currentQIndex]?.type;
+  const answerTrigger = currentQuestionType === 'MCQ' ? answers : null;
 
   // Typeset mathematical LaTeX equations via MathJax dynamically on changes
   useEffect(() => {
     if (window.MathJax && window.MathJax.typesetPromise) {
       const timer = setTimeout(() => {
-        window.MathJax.typesetPromise()
-          .catch(err => console.warn('GATEPrep Nexus MathJax Typesetting Warning:', err));
-      }, 60);
+        try {
+          // Clear typesetting cache to force re-evaluation of newly mounted DOM nodes
+          window.MathJax.typesetClear();
+          window.MathJax.typesetPromise()
+            .catch(err => console.warn('GATEPrep Nexus MathJax Typesetting Warning:', err));
+        } catch (e) {
+          console.warn('GATEPrep Nexus MathJax error:', e);
+        }
+      }, 80);
       return () => clearTimeout(timer);
     }
-  }, [testMode, currentQIndex, testResult, activeTest]);
+  }, [testMode, currentQIndex, testResult, activeTest, answerTrigger]);
 
   const handleStartTest = (test) => {
     setActiveTest(test);
     setAnswers({});
     setMarkedForReview({});
     setCurrentQIndex(0);
-    setSecondsLeft(test.timeLimit);
     setTestMode(true);
     setTestResult(null);
   };
@@ -106,11 +167,7 @@ const Practice = () => {
     });
   }
 
-  const formatTime = (secs) => {
-    const mins = Math.floor(secs / 60);
-    const remainingSecs = secs % 60;
-    return `${mins.toString().padStart(2, '0')}:${remainingSecs.toString().padStart(2, '0')}`;
-  };
+
 
   const filteredTests = MOCK_TESTS.filter(test => test.track === user?.track || user?.track === 'Dual');
 
@@ -267,21 +324,15 @@ const Practice = () => {
             </h4>
 
             {/* Countdown timer */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              fontSize: '1.15rem',
-              fontWeight: 800,
-              color: secondsLeft < 180 ? 'var(--accent-rose)' : 'var(--text-primary)'
-            }}>
-              <span>⏱️</span>
-              <span>{formatTime(secondsLeft)}</span>
-            </div>
+            <Timer initialTime={activeTest.timeLimit} onTimeUp={handleSubmitTest} />
           </div>
 
           {/* Core Question Card */}
-          <div className="glass-panel" style={{ padding: '32px', minHeight: '360px', display: 'flex', flexDirection: 'column', justifyBetween: 'space-between' }}>
+          <div 
+            key={currentQuestion.id}
+            className="glass-panel" 
+            style={{ padding: '32px', minHeight: '360px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+          >
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                 <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-secondary)' }}>
@@ -292,38 +343,20 @@ const Practice = () => {
                 </span>
               </div>
 
-              <p 
-                style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '28px', lineHeight: 1.5 }}
-                dangerouslySetInnerHTML={{ __html: currentQuestion.question }}
-              />
+              <QuestionText html={currentQuestion.question} />
 
               {/* Input details based on MCQ vs NAT */}
               {currentQuestion.type === 'MCQ' ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  {currentQuestion.options.map((opt, oIdx) => {
-                    const isSelected = answers[currentQuestion.id] === oIdx;
-                    return (
-                      <div 
-                        key={oIdx}
-                        onClick={() => handleAnswerSelect(currentQuestion.id, oIdx)}
-                        style={{
-                          padding: '14px 20px',
-                          border: `1px solid ${isSelected ? 'var(--accent-purple)' : 'var(--border-color)'}`,
-                          backgroundColor: isSelected ? 'var(--accent-purple-glow)' : 'transparent',
-                          borderRadius: 'var(--radius-md)',
-                          fontSize: '0.9rem',
-                          cursor: 'pointer',
-                          transition: 'all 0.15s ease'
-                        }}
-                        className="option-choice-row"
-                      >
-                        <span style={{ fontWeight: 700, marginRight: '12px', color: isSelected ? 'var(--accent-purple)' : 'var(--text-muted)' }}>
-                          {String.fromCharCode(65 + oIdx)}.
-                        </span>
-                        <span dangerouslySetInnerHTML={{ __html: opt }} />
-                      </div>
-                    );
-                  })}
+                  {currentQuestion.options.map((opt, oIdx) => (
+                    <OptionRow
+                      key={`${currentQuestion.id}-opt-${oIdx}`}
+                      opt={opt}
+                      oIdx={oIdx}
+                      isSelected={answers[currentQuestion.id] === oIdx}
+                      onClick={() => handleAnswerSelect(currentQuestion.id, oIdx)}
+                    />
+                  ))}
                 </div>
               ) : (
                 /* NAT text field */

@@ -117,9 +117,14 @@ export default function CommunityQBank() {
   useEffect(() => {
     if (window.MathJax && window.MathJax.typesetPromise) {
       const timer = setTimeout(() => {
-        window.MathJax.typesetPromise()
-          .catch(err => console.warn('GATEPrep Nexus MathJax Typesetting Warning:', err));
-      }, 60);
+        try {
+          window.MathJax.typesetClear();
+          window.MathJax.typesetPromise()
+            .catch(err => console.warn('GATEPrep Nexus MathJax Typesetting Warning:', err));
+        } catch (e) {
+          console.warn('GATEPrep Nexus MathJax error:', e);
+        }
+      }, 80);
       return () => clearTimeout(timer);
     }
   }, [activeQuestionData, showSolution, showHint, userSelection, userNatInput, isGraded, activeTab]);
