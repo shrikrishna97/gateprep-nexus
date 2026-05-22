@@ -6,6 +6,20 @@ import {
   parseIITMQuestionPage 
 } from '../data/mockData';
 
+const categoriesList = [
+  { id: 'all', name: 'All Categories', type: 'all' },
+  { id: 'linear_algebra', name: 'Linear Algebra', type: 'shared' },
+  { id: 'prob_stats', name: 'Probability & Stats', type: 'shared' },
+  { id: 'machine_learning', name: 'Machine Learning', type: 'da_only' },
+  { id: 'calculus', name: 'Calculus & Optimization', type: 'shared' },
+  { id: 'dbms', name: 'Database Management', type: 'shared' },
+  { id: 'pdsa', name: 'Programming & DSA', type: 'shared' },
+  { id: 'ai', name: 'Artificial Intelligence', type: 'da_only' },
+  { id: 'aptitude', name: 'General Aptitude', type: 'shared' },
+  { id: 'gate_2025', name: 'GATE-2025 Past Paper', type: 'da_only' },
+  { id: 'gate_2024', name: 'GATE-2024 Past Paper', type: 'da_only' }
+];
+
 export default function CommunityQBank() {
   const { user } = useApp();
   const BASE_URL = 'https://iitmbsc-student-projects.github.io/gate-da/';
@@ -42,20 +56,6 @@ export default function CommunityQBank() {
 
   // Active Category Filtering
   const [activeTab, setActiveTab] = useState('all');
-
-  const categoriesList = [
-    { id: 'all', name: 'All Categories', type: 'all' },
-    { id: 'linear_algebra', name: 'Linear Algebra', type: 'shared' },
-    { id: 'prob_stats', name: 'Probability & Stats', type: 'shared' },
-    { id: 'machine_learning', name: 'Machine Learning', type: 'da_only' },
-    { id: 'calculus', name: 'Calculus & Optimization', type: 'shared' },
-    { id: 'dbms', name: 'Database Management', type: 'shared' },
-    { id: 'pdsa', name: 'Programming & DSA', type: 'shared' },
-    { id: 'ai', name: 'Artificial Intelligence', type: 'da_only' },
-    { id: 'aptitude', name: 'General Aptitude', type: 'shared' },
-    { id: 'gate_2025', name: 'GATE-2025 Past Paper', type: 'da_only' },
-    { id: 'gate_2024', name: 'GATE-2024 Past Paper', type: 'da_only' }
-  ];
 
   // 1. Initial crawler to fetch the sidebar links index
   useEffect(() => {

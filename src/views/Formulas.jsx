@@ -34,6 +34,17 @@ const Formulas = () => {
     localStorage.setItem(`gate_flashcards_${user?.email || 'default'}`, JSON.stringify(flashcards));
   }, [flashcards, user]);
 
+  // Typeset mathematical LaTeX equations via MathJax dynamically on changes
+  useEffect(() => {
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      const timer = setTimeout(() => {
+        window.MathJax.typesetPromise()
+          .catch(err => console.warn('GATEPrep Nexus MathJax Typesetting Warning:', err));
+      }, 60);
+      return () => clearTimeout(timer);
+    }
+  }, [activeSubTab, selectedCategory, formulaSearch, visibleCards, currentCardIndex, isFlipped]);
+
   const handleCopyFormula = (text, idx) => {
     navigator.clipboard.writeText(text);
     setCopiedId(idx);
@@ -305,8 +316,7 @@ const Formulas = () => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontFamily: '"Courier New", Courier, monospace, serif',
-                      fontSize: '1rem',
+                      fontSize: '1.05rem',
                       color: 'var(--text-primary)',
                       textAlign: 'center',
                       margin: '0 0 16px',
@@ -314,7 +324,7 @@ const Formulas = () => {
                       overflowX: 'auto',
                       whiteSpace: 'nowrap'
                     }}>
-                      <code>{f.formula}</code>
+                      <span className="latex-formula">{f.formula}</span>
                     </div>
 
                     {/* Description */}

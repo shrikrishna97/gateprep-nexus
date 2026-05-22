@@ -150,31 +150,25 @@ const Advisor = () => {
     const saved = localStorage.getItem(`gate_chat_history_${user?.email || 'default'}`);
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.length > 0) return parsed;
       } catch (e) {
-        return [];
+        // Fallback
       }
     }
-    return [];
+    return [
+      {
+        id: 'welcome',
+        sender: 'ai',
+        text: ADVISOR_KNOWLEDGE.default,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }
+    ];
   });
 
   const [inputVal, setInputVal] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
-
-  // Initialize with welcome message if empty
-  useEffect(() => {
-    if (messages.length === 0) {
-      setMessages([
-        {
-          id: 'welcome',
-          sender: 'ai',
-          text: ADVISOR_KNOWLEDGE.default,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        }
-      ]);
-    }
-  }, [messages]);
 
   // Sync to localStorage
   useEffect(() => {
@@ -192,7 +186,7 @@ const Advisor = () => {
     if (!text.trim()) return;
 
     const userMessage = {
-      id: `msg-${Date.now()}-user`,
+      id: `msg-${messages.length + 1}-user`,
       sender: 'user',
       text: text.trim(),
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -397,7 +391,7 @@ Thank you for your question! To help you achieve a high rank, here is my recomme
       }
       
       // Handle bullet list items (starts with * or -)
-      const bulletMatch = trimmedLine.match(/^[\*\-]\s+(.*)$/);
+      const bulletMatch = trimmedLine.match(/^[* -]\s+(.*)$/);
       if (bulletMatch) {
         const indentLevel = rawLine.match(/^\s*/)[0].length;
         elements.push(

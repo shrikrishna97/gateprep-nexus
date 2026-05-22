@@ -28,7 +28,19 @@ const Practice = () => {
     }, 1000);
 
     return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [testMode, secondsLeft]);
+
+  // Typeset mathematical LaTeX equations via MathJax dynamically on changes
+  useEffect(() => {
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      const timer = setTimeout(() => {
+        window.MathJax.typesetPromise()
+          .catch(err => console.warn('GATEPrep Nexus MathJax Typesetting Warning:', err));
+      }, 60);
+      return () => clearTimeout(timer);
+    }
+  }, [testMode, currentQIndex, testResult, activeTest]);
 
   const handleStartTest = (test) => {
     setActiveTest(test);
@@ -61,7 +73,7 @@ const Practice = () => {
     }));
   };
 
-  const handleSubmitTest = () => {
+  function handleSubmitTest() {
     setTestMode(false);
     
     // Evaluate scores
@@ -92,7 +104,7 @@ const Practice = () => {
       answers,
       questions
     });
-  };
+  }
 
   const formatTime = (secs) => {
     const mins = Math.floor(secs / 60);
@@ -143,12 +155,9 @@ const Practice = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             {testResult.questions.map((q, idx) => {
               const userAnswer = testResult.answers[q.id];
-              let isCorrect = false;
-              if (q.type === 'MCQ') {
-                isCorrect = userAnswer === q.correctOption;
-              } else {
-                isCorrect = userAnswer && parseFloat(userAnswer) === parseFloat(q.correctAnswer);
-              }
+              const isCorrect = q.type === 'MCQ'
+                ? userAnswer === q.correctOption
+                : !!(userAnswer && parseFloat(userAnswer) === parseFloat(q.correctAnswer));
 
               return (
                 <div key={q.id} style={{
@@ -239,7 +248,6 @@ const Practice = () => {
   if (testMode && activeTest) {
     const currentQuestion = activeTest.questions[currentQIndex];
     const isQuestionMarked = !!markedForReview[currentQuestion.id];
-    const isQuestionAnswered = answers[currentQuestion.id] !== undefined;
 
     return (
       <div style={{

@@ -169,7 +169,7 @@ export const AppProvider = ({ children }) => {
     }
 
     // Determine subjects list
-    let subjects = [];
+    let subjects;
     if (track === 'CS') {
       subjects = GATE_SYLLABUS.CS;
     } else if (track === 'DA') {
