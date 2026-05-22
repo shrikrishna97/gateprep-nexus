@@ -155,31 +155,31 @@ export const GATE_NOTICES = [
 ];
 export const FORMULA_DATA = {
   LA: [
-    { title: 'Eigenvalues & Trace', formula: '\\\\( \\\\text{Trace}(A) = \\\\sum \\\\lambda_i \\\\quad \\\\text{and} \\\\quad \\\\text{det}(A) = \\\\prod \\\\lambda_i \\\\)', description: 'The sum of eigenvalues equals the trace (sum of diagonal elements), and the product of eigenvalues equals the determinant.' },
-    { title: 'Rank-Nullity Theorem', formula: '\\\\( \\\\text{Rank}(A) + \\\\text{Nullity}(A) = n \\\\)', description: 'For an m x n matrix A, the dimension of the column space plus the dimension of the null space equals the number of columns.' },
-    { title: 'Eigenvalues of A^k', formula: '\\\\( A \\\\cdot v = \\\\lambda \\\\cdot v \\\\implies A^k \\\\cdot v = \\\\lambda^k \\\\cdot v \\\\)', description: 'If matrix A has an eigenvalue λ, then A raised to power k has eigenvalue λ raised to power k with the same eigenvector.' }
+    { title: 'Eigenvalues & Trace', formula: '\\( \\text{Trace}(A) = \\sum \\lambda_i \\quad \\text{and} \\quad \\text{det}(A) = \\prod \\lambda_i \\)', description: 'The sum of eigenvalues equals the trace (sum of diagonal elements), and the product of eigenvalues equals the determinant.' },
+    { title: 'Rank-Nullity Theorem', formula: '\\( \\text{Rank}(A) + \\text{Nullity}(A) = n \\)', description: 'For an m x n matrix A, the dimension of the column space plus the dimension of the null space equals the number of columns.' },
+    { title: 'Eigenvalues of A^k', formula: '\\( A \\cdot v = \\lambda \\cdot v \\implies A^k \\cdot v = \\lambda^k \\cdot v \\)', description: 'If matrix A has an eigenvalue λ, then A raised to power k has eigenvalue λ raised to power k with the same eigenvector.' }
   ],
   Prob: [
-    { title: 'Bayes\' Theorem', formula: '\\\\( P(A|B) = \\\\frac{P(B|A) \\\\cdot P(A)}{P(B)} \\\\)', description: 'Crucial for conditional probability, classification problems, and Naive Bayes in Machine Learning.' },
-    { title: 'Variance of Sum', formula: '\\\\( \\\\text{Var}(X \\\\pm Y) = \\\\text{Var}(X) + \\\\text{Var}(Y) \\\\pm 2\\\\text{Cov}(X, Y) \\\\)', description: 'If X and Y are independent, Var(X + Y) = Var(X - Y) = Var(X) + Var(Y) since Cov(X,Y) = 0.' },
-    { title: 'Binomial Distribution', formula: '\\\\( P(X = k) = \\\\binom{n}{k} p^k (1-p)^{n-k} \\\\)', description: 'Probability of exactly k successes in n independent Bernoulli trials. Mean E[X] = np, Variance Var(X) = np(1-p).' }
+    { title: 'Bayes\' Theorem', formula: '\\( P(A|B) = \\frac{P(B|A) \\cdot P(A)}{P(B)} \\)', description: 'Crucial for conditional probability, classification problems, and Naive Bayes in Machine Learning.' },
+    { title: 'Variance of Sum', formula: '\\( \\text{Var}(X \\pm Y) = \\text{Var}(X) + \\text{Var}(Y) \\pm 2\\text{Cov}(X, Y) \\)', description: 'If X and Y are independent, Var(X + Y) = Var(X - Y) = Var(X) + Var(Y) since Cov(X,Y) = 0.' },
+    { title: 'Binomial Distribution', formula: '\\( P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k} \\)', description: 'Probability of exactly k successes in n independent Bernoulli trials. Mean E[X] = np, Variance Var(X) = np(1-p).' }
   ],
   DSA: [
-    { title: 'Master Theorem for Recurrences', formula: '\\\\( T(n) = a \\\\cdot T\\\\left(\\\\frac{n}{b}\\\\right) + f(n) \\\\quad [\\\\text{Compare } f(n) \\\\text{ vs } n^{\\\\log_b a}] \\\\)', description: 'Solves recurrences of divide-and-conquer algorithms (e.g. Merge Sort: a=2, b=2, f(n)=O(n) ➔ T(n) = O(n log n)).' },
-    { title: 'Binary Tree Nodes', formula: '\\\\( N_{\\\\text{max}} = 2^{h+1} - 1 \\\\quad \\\\text{and} \\\\quad L = I + 1 \\\\)', description: 'Maximum nodes in a binary tree of height h. L represents leaf nodes, I represents internal nodes (for Strict Binary Trees).' }
+    { title: 'Master Theorem for Recurrences', formula: '\\( T(n) = a \\cdot T\\left(\\frac{n}{b}\\right) + f(n) \\quad [\\text{Compare } f(n) \\text{ vs } n^{\\log_b a}] \\)', description: 'Solves recurrences of divide-and-conquer algorithms (e.g. Merge Sort: a=2, b=2, f(n)=O(n) ➔ T(n) = O(n log n)).' },
+    { title: 'Binary Tree Nodes', formula: '\\( N_{\\text{max}} = 2^{h+1} - 1 \\quad \\text{and} \\quad L = I + 1 \\)', description: 'Maximum nodes in a binary tree of height h. L represents leaf nodes, I represents internal nodes (for Strict Binary Trees).' }
   ],
   ML: [
-    { title: 'Precision, Recall & F1-Score', formula: '\\\\( F_1 = 2 \\\\cdot \\\\frac{\\\\text{Precision} \\\\cdot \\\\text{Recall}}{\\\\text{Precision} + \\\\text{Recall}} \\\\)', description: 'Standard classification metrics. Precision = TP / (TP + FP), Recall = TP / (TP + FN). F1 is their harmonic mean.' },
-    { title: 'Gradient Descent Update Rule', formula: '\\\\( \\\\theta_j := \\\\theta_j - \\\\alpha \\\\cdot \\\\frac{\\\\partial J(\\\\theta)}{\\\\partial \\\\theta_j} \\\\)', description: 'Optimization algorithm that updates weights θ in the opposite direction of the gradient of cost function J with learning rate α.' },
-    { title: 'L2 Regularization (Ridge)', formula: '\\\\( J(\\\\theta) = J_0(\\\\theta) + \\\\lambda \\\\sum \\\\theta_j^2 \\\\)', description: 'Adds the squared magnitude of coefficients (L2 norm) as a penalty term to the loss function J₀ to prevent overfitting.' }
+    { title: 'Precision, Recall & F1-Score', formula: '\\( F_1 = 2 \\cdot \\frac{\\text{Precision} \\cdot \\text{Recall}}{\\text{Precision} + \\text{Recall}} \\)', description: 'Standard classification metrics. Precision = TP / (TP + FP), Recall = TP / (TP + FN). F1 is their harmonic mean.' },
+    { title: 'Gradient Descent Update Rule', formula: '\\( \\theta_j := \\theta_j - \\alpha \\cdot \\frac{\\partial J(\\theta)}{\\partial \\theta_j} \\)', description: 'Optimization algorithm that updates weights θ in the opposite direction of the gradient of cost function J with learning rate α.' },
+    { title: 'L2 Regularization (Ridge)', formula: '\\( J(\\theta) = J_0(\\theta) + \\lambda \\sum \\theta_j^2 \\)', description: 'Adds the squared magnitude of coefficients (L2 norm) as a penalty term to the loss function J₀ to prevent overfitting.' }
   ]
 };
 
 export const FLASHCARDS_DATA = [
-  { id: 'f1', category: 'Linear Algebra', question: 'What is a positive definite matrix?', answer: 'A symmetric matrix \\\\( A \\\\) is positive definite if all its eigenvalues are strictly positive (\\\\( \\\\lambda_i > 0 \\\\)), or equivalently, \\\\( x^T A x > 0 \\\\) for all non-zero vectors \\\\( x \\\\).' },
-  { id: 'f2', category: 'Databases', question: 'What is BCNF (Boyce-Codd Normal Form)?', answer: 'A relation \\\\( R \\\\) is in BCNF if for every non-trivial functional dependency \\\\( X \\\\rightarrow Y \\\\), \\\\( X \\\\) is a superkey.' },
-  { id: 'f3', category: 'Machine Learning', question: 'What is the Bias-Variance Tradeoff?', answer: 'Bias represents error from erroneous assumptions in the model. Variance represents error from sensitivity to small fluctuations in training data. Increasing model complexity decreases bias (\\\\( \\\\text{bias} \\\\)) but increases variance (\\\\( \\\\text{variance} \\\\)).' },
-  { id: 'f4', category: 'Operating Systems', question: 'What is a Semaphore?', answer: 'A semaphore is an integer variable used for signaling and solving synchronization/concurrency problems, accessed only through two standard atomic operations: \\\\( \\\\text{wait}() \\\\) (\\\\( P \\\\)) and \\\\( \\\\text{signal}() \\\\) (\\\\( V \\\\)).' }
+  { id: 'f1', category: 'Linear Algebra', question: 'What is a positive definite matrix?', answer: 'A symmetric matrix \\( A \\) is positive definite if all its eigenvalues are strictly positive (\\( \\lambda_i > 0 \\)), or equivalently, \\( x^T A x > 0 \\) for all non-zero vectors \\( x \\).' },
+  { id: 'f2', category: 'Databases', question: 'What is BCNF (Boyce-Codd Normal Form)?', answer: 'A relation \\( R \\) is in BCNF if for every non-trivial functional dependency \\( X \\rightarrow Y \\), \\( X \\) is a superkey.' },
+  { id: 'f3', category: 'Machine Learning', question: 'What is the Bias-Variance Tradeoff?', answer: 'Bias represents error from erroneous assumptions in the model. Variance represents error from sensitivity to small fluctuations in training data. Increasing model complexity decreases bias (\\( \\text{bias} \\)) but increases variance (\\( \\text{variance} \\)).' },
+  { id: 'f4', category: 'Operating Systems', question: 'What is a Semaphore?', answer: 'A semaphore is an integer variable used for signaling and solving synchronization/concurrency problems, accessed only through two standard atomic operations: \\( \\text{wait}() \\) (\\( P \\)) and \\( \\text{signal}() \\) (\\( V \\)).' }
 ];
 
 export const MOCK_TESTS = [
@@ -192,7 +192,7 @@ export const MOCK_TESTS = [
       {
         id: 'q-cs-1',
         type: 'MCQ',
-        question: 'Let \\\\( G \\\\) be a simple undirected graph with 10 vertices and 3 connected components. What is the maximum possible number of edges in \\\\( G \\\\)?',
+        question: 'Let \\( G \\) be a simple undirected graph with 10 vertices and 3 connected components. What is the maximum possible number of edges in \\( G \\)?',
         options: [
           '21',
           '28',
@@ -200,7 +200,7 @@ export const MOCK_TESTS = [
           '45'
         ],
         correctOption: 1, // index 1 is "28"
-        explanation: 'For a simple graph with \\\\( n \\\\) vertices and \\\\( k \\\\) connected components, the maximum number of edges is \\\\( \\\\frac{(n - k)(n - k + 1)}{2} \\\\). Here, \\\\( n = 10 \\\\) and \\\\( k = 3 \\\\). Therefore, the maximum possible number of edges is \\\\( \\\\frac{(10 - 3)(10 - 3 + 1)}{2} = \\\\frac{7 \\\\times 8}{2} = 28 \\\\). This maximum is achieved when \\\\( 2 \\\\) components are isolated vertices (1 vertex each, 0 edges) and \\\\( 1 \\\\) component is a complete graph \\\\( K_8 \\\\) with \\\\( \\\\frac{8 \\\\times 7}{2} = 28 \\\\) edges.'
+        explanation: 'For a simple graph with \\( n \\) vertices and \\( k \\) connected components, the maximum number of edges is \\( \\frac{(n - k)(n - k + 1)}{2} \\). Here, \\( n = 10 \\) and \\( k = 3 \\). Therefore, the maximum possible number of edges is \\( \\frac{(10 - 3)(10 - 3 + 1)}{2} = \\frac{7 \\times 8}{2} = 28 \\). This maximum is achieved when \\( 2 \\) components are isolated vertices (1 vertex each, 0 edges) and \\( 1 \\) component is a complete graph \\( K_8 \\) with \\( \\frac{8 \\times 7}{2} = 28 \\) edges.'
       },
       {
         id: 'q-cs-2',
@@ -220,7 +220,7 @@ export const MOCK_TESTS = [
         type: 'NAT',
         question: 'An IP packet with a header size of 20 bytes and a total packet size of 1500 bytes is fragmented. The maximum transmission unit (MTU) of the path is 500 bytes. What is the fragment offset value (in units of 8 bytes) in the second fragment?',
         correctAnswer: '60',
-        explanation: 'The original payload is \\\\( 1500 - 20 = 1480 \\\\) bytes. The MTU is \\\\( 500 \\\\) bytes, which includes a \\\\( 20 \\\\)-byte IP header, leaving the maximum payload size per fragment as \\\\( 500 - 20 = 480 \\\\) bytes. Since \\\\( 480 \\\\) is a multiple of \\\\( 8 \\\\), it is a valid fragment payload size. Fragment 1 has payload size \\\\( 480 \\\\) bytes (offset \\\\( 0 \\\\)). Fragment 2 will start at payload offset \\\\( 480 \\\\). Therefore, the Fragment Offset field value in the second fragment is \\\\( \\\\frac{480}{8} = 60 \\\\).'
+        explanation: 'The original payload is \\( 1500 - 20 = 1480 \\) bytes. The MTU is \\( 500 \\) bytes, which includes a \\( 20 \\)-byte IP header, leaving the maximum payload size per fragment as \\( 500 - 20 = 480 \\) bytes. Since \\( 480 \\) is a multiple of \\( 8 \\), it is a valid fragment payload size. Fragment 1 has payload size \\( 480 \\) bytes (offset \\( 0 \\)). Fragment 2 will start at payload offset \\( 480 \\). Therefore, the Fragment Offset field value in the second fragment is \\( \\frac{480}{8} = 60 \\).'
       }
     ]
   },
@@ -241,12 +241,12 @@ export const MOCK_TESTS = [
           'It becomes highly non-linear.'
         ],
         correctOption: 2,
-        explanation: 'Logistic Regression makes decisions based on the sign of \\\\( w^T x + b = 0 \\\\). If all feature vectors \\\\( x \\\\) are doubled to \\\\( 2x \\\\), we can achieve identical classification by halving the weight vector \\\\( w \\\\) to \\\\( \\\\frac{w}{2} \\\\), leading to \\\\( \\\\left(\\\\frac{w}{2}\\\\right)^T (2x) + b = w^T x + b = 0 \\\\). Therefore, the physical decision boundary and classification of all points remain completely unchanged.'
+        explanation: 'Logistic Regression makes decisions based on the sign of \\( w^T x + b = 0 \\). If all feature vectors \\( x \\) are doubled to \\( 2x \\), we can achieve identical classification by halving the weight vector \\( w \\) to \\( \\frac{w}{2} \\), leading to \\( \\left(\\frac{w}{2}\\right)^T (2x) + b = w^T x + b = 0 \\). Therefore, the physical decision boundary and classification of all points remain completely unchanged.'
       },
       {
         id: 'q-da-2',
         type: 'MCQ',
-        question: 'Let \\\\( A \\\\) be a \\\\( 3 \\\\times 3 \\\\) matrix with eigenvalues \\\\( 1 \\\\), \\\\( 2 \\\\), and \\\\( 5 \\\\). What is the trace of the matrix \\\\( B = A^2 - 3A + 4I \\\\)?',
+        question: 'Let \\( A \\) be a \\( 3 \\times 3 \\) matrix with eigenvalues \\( 1 \\), \\( 2 \\), and \\( 5 \\). What is the trace of the matrix \\( B = A^2 - 3A + 4I \\)?',
         options: [
           '13',
           '15',
@@ -254,14 +254,14 @@ export const MOCK_TESTS = [
           '20'
         ],
         correctOption: 2, // "18"
-        explanation: 'By the spectral mapping theorem, the eigenvalues of the matrix \\\\( B = A^2 - 3A + 4I \\\\) are given by applying the polynomial function to the eigenvalues of \\\\( A \\\\) (which are \\\\( \\\\lambda_1=1 \\\\), \\\\( \\\\lambda_2=2 \\\\), and \\\\( \\\\lambda_3=5 \\\\)).<br /><br />• For \\\\( \\\\lambda_1=1 \\\\): The corresponding eigenvalue of \\\\( B \\\\) is \\\\( 1^2 - 3(1) + 4 = 2 \\\\).<br />• For \\\\( \\\\lambda_2=2 \\\\): The corresponding eigenvalue of \\\\( B \\\\) is \\\\( 2^2 - 3(2) + 4 = 2 \\\\).<br />• For \\\\( \\\\lambda_3=5 \\\\): The corresponding eigenvalue of \\\\( B \\\\) is \\\\( 5^2 - 3(5) + 4 = 14 \\\\).<br /><br />Since the trace of a matrix is equal to the sum of its eigenvalues, we have:<br />\\\\( \\\\text{Trace}(B) = 2 + 2 + 14 = 18 \\\\).'
+        explanation: 'By the spectral mapping theorem, the eigenvalues of the matrix \\( B = A^2 - 3A + 4I \\) are given by applying the polynomial function to the eigenvalues of \\( A \\) (which are \\( \\lambda_1=1 \\), \\( \\lambda_2=2 \\), and \\( \\lambda_3=5 \\)).<br /><br />• For \\( \\lambda_1=1 \\): The corresponding eigenvalue of \\( B \\) is \\( 1^2 - 3(1) + 4 = 2 \\).<br />• For \\( \\lambda_2=2 \\): The corresponding eigenvalue of \\( B \\) is \\( 2^2 - 3(2) + 4 = 2 \\).<br />• For \\( \\lambda_3=5 \\): The corresponding eigenvalue of \\( B \\) is \\( 5^2 - 3(5) + 4 = 14 \\).<br /><br />Since the trace of a matrix is equal to the sum of its eigenvalues, we have:<br />\\( \\text{Trace}(B) = 2 + 2 + 14 = 18 \\).'
       },
       {
         id: 'q-da-3',
         type: 'NAT',
-        question: 'Consider a Naive Bayes classifier with two classes, \\\\( C_1 \\\\) and \\\\( C_2 \\\\). The prior probabilities are \\\\( P(C_1) = 0.6 \\\\) and \\\\( P(C_2) = 0.4 \\\\). For a given query vector \\\\( x \\\\), the likelihoods are \\\\( P(x|C_1) = 0.3 \\\\) and \\\\( P(x|C_2) = 0.7 \\\\). What is the posterior probability \\\\( P(C_1|x) \\\\)? (Round off to 2 decimal places)',
+        question: 'Consider a Naive Bayes classifier with two classes, \\( C_1 \\) and \\( C_2 \\). The prior probabilities are \\( P(C_1) = 0.6 \\) and \\( P(C_2) = 0.4 \\). For a given query vector \\( x \\), the likelihoods are \\( P(x|C_1) = 0.3 \\) and \\( P(x|C_2) = 0.7 \\). What is the posterior probability \\( P(C_1|x) \\)? (Round off to 2 decimal places)',
         correctAnswer: '0.39',
-        explanation: `By Bayes' theorem:<br />\\\\( P(C_1|x) = \\\\frac{P(x|C_1) P(C_1)}{P(x|C_1) P(C_1) + P(x|C_2) P(C_2)} \\\\)<br /><br />Substituting the given values:<br />\\\\( P(C_1|x) = \\\\frac{0.3 \\\\times 0.6}{0.3 \\\\times 0.6 + 0.7 \\\\times 0.4} = \\\\frac{0.18}{0.18 + 0.28} = \\\\frac{0.18}{0.46} \\\\approx 0.3913 \\\\)<br /><br />Rounding off to 2 decimal places, we get \\\\( 0.39 \\\\).`
+        explanation: `By Bayes' theorem:<br />\\( P(C_1|x) = \\frac{P(x|C_1) P(C_1)}{P(x|C_1) P(C_1) + P(x|C_2) P(C_2)} \\)<br /><br />Substituting the given values:<br />\\( P(C_1|x) = \\frac{0.3 \\times 0.6}{0.3 \\times 0.6 + 0.7 \\times 0.4} = \\frac{0.18}{0.18 + 0.28} = \\frac{0.18}{0.46} \\approx 0.3913 \\)<br /><br />Rounding off to 2 decimal places, we get \\( 0.39 \\).`
       }
     ]
   }

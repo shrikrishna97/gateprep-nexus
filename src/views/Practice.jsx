@@ -173,9 +173,10 @@ const Practice = () => {
                     </span>
                   </div>
 
-                  <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '16px', lineHeight: 1.4 }}>
-                    {q.question}
-                  </p>
+                  <p 
+                    style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '16px', lineHeight: 1.4 }}
+                    dangerouslySetInnerHTML={{ __html: q.question }}
+                  />
 
                   {/* Render Choices if MCQ */}
                   {q.type === 'MCQ' ? (
@@ -195,7 +196,7 @@ const Practice = () => {
                               isCorrectOpt ? 'var(--accent-emerald-glow)' :
                               (isChosen && !isCorrectOpt) ? 'var(--accent-rose-glow)' : 'transparent'
                           }}>
-                            <span>{opt}</span>
+                            <span dangerouslySetInnerHTML={{ __html: opt }} />
                             <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)' }}>
                               {isCorrectOpt ? '✓ Correct Option' : (isChosen ? '✗ Your Choice' : '')}
                             </span>
@@ -233,7 +234,7 @@ const Practice = () => {
                   }}>
                     <strong style={{ color: 'var(--text-primary)' }}>🎓 Solution Explanation:</strong>
                     <br />
-                    <p style={{ marginTop: '6px' }}>{q.explanation}</p>
+                    <p style={{ marginTop: '6px' }} dangerouslySetInnerHTML={{ __html: q.explanation }} />
                   </div>
                 </div>
               );
@@ -291,9 +292,10 @@ const Practice = () => {
                 </span>
               </div>
 
-              <p style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '28px', lineHeight: 1.5 }}>
-                {currentQuestion.question}
-              </p>
+              <p 
+                style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '28px', lineHeight: 1.5 }}
+                dangerouslySetInnerHTML={{ __html: currentQuestion.question }}
+              />
 
               {/* Input details based on MCQ vs NAT */}
               {currentQuestion.type === 'MCQ' ? (
@@ -318,7 +320,7 @@ const Practice = () => {
                         <span style={{ fontWeight: 700, marginRight: '12px', color: isSelected ? 'var(--accent-purple)' : 'var(--text-muted)' }}>
                           {String.fromCharCode(65 + oIdx)}.
                         </span>
-                        <span>{opt}</span>
+                        <span dangerouslySetInnerHTML={{ __html: opt }} />
                       </div>
                     );
                   })}

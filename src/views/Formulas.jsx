@@ -324,7 +324,7 @@ const Formulas = () => {
                       overflowX: 'auto',
                       whiteSpace: 'nowrap'
                     }}>
-                      <span className="latex-formula">{f.formula}</span>
+                      <span className="latex-formula" dangerouslySetInnerHTML={{ __html: f.formula }}></span>
                     </div>
 
                     {/* Description */}
@@ -435,7 +435,7 @@ const Formulas = () => {
                         <span className="study-badge learning">📚 STUDYING</span>
                       </div>
                       <div className="card-face-content">
-                        <h3>{currentCard.question}</h3>
+                        <h3 dangerouslySetInnerHTML={{ __html: currentCard.question }}></h3>
                       </div>
                       <div className="card-face-footer">
                         <span>💡 Tap card to reveal answer</span>
@@ -451,7 +451,7 @@ const Formulas = () => {
                         </span>
                       </div>
                       <div className="card-face-content">
-                        <p>{currentCard.answer}</p>
+                        <p dangerouslySetInnerHTML={{ __html: currentCard.answer }}></p>
                       </div>
                       <div className="card-face-footer">
                         <span>↩ Tap card to view question</span>
