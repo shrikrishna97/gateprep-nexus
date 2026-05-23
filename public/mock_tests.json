@@ -1,0 +1,246 @@
+[
+  {
+    "id": "test-cs-pyq-1",
+    "track": "CS",
+    "name": "GATE CS Algorithms & Discrete Mathematics",
+    "timeLimit": 1200,
+    "questions": [
+      {
+        "id": "q-cs-101",
+        "type": "MCQ",
+        "question": "Let \\( G \\) be a simple undirected graph with 10 vertices and 3 connected components. What is the maximum possible number of edges in \\( G \\)?",
+        "options": [
+          "21",
+          "28",
+          "36",
+          "45"
+        ],
+        "correctOption": 1,
+        "explanation": "For a simple graph with \\( n \\) vertices and \\( k \\) connected components, the maximum number of edges is \\( \\frac{(n - k)(n - k + 1)}{2} \\). Here, \\( n = 10 \\) and \\( k = 3 \\). Therefore, the maximum possible number of edges is \\( \\frac{(10 - 3)(10 - 3 + 1)}{2} = \\frac{7 \\times 8}{2} = 28 \\). This maximum is achieved when \\( 2 \\) components are isolated vertices (1 vertex each, 0 edges) and \\( 1 \\) component is a complete graph \\( K_8 \\) with \\( \\frac{8 \\times 7}{2} = 28 \\) edges."
+      },
+      {
+        "id": "q-cs-102",
+        "type": "MCQ",
+        "question": "What is the time complexity of the recurrence relation \\( T(n) = 2T(n/2) + n \\log n \\)?",
+        "options": [
+          "\\( O(n) \\)",
+          "\\( O(n \\log n) \\)",
+          "\\( O(n \\log^2 n) \\)",
+          "\\( O(n^2) \\)"
+        ],
+        "correctOption": 2,
+        "explanation": "Using Case 2 of the Master Theorem extension (since \\( f(n) = n \\log n \\) and \\( n^{\\log_b a} = n^{\\log_2 2} = n \\)), the recurrence evaluates to \\( T(n) = O(n \\log^2 n) \\)."
+      },
+      {
+        "id": "q-cs-103",
+        "type": "MCQ",
+        "question": "Consider a hash table of size 10 using open addressing with linear probing. The hash function is \\( h(k) = k \\bmod 10 \\). The keys 43, 36, 92, 87, 11 are inserted in this order. What is the index of key 11?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correctOption": 1,
+        "explanation": "Let's trace the linear probing insertions:<br />1. Hash of 43 is \\( 43 \\bmod 10 = 3 \\). Slot 3 is empty ➔ Key 43 stored in Slot 3.<br />2. Hash of 36 is \\( 36 \\bmod 10 = 6 \\). Slot 6 is empty ➔ Key 36 stored in Slot 6.<br />3. Hash of 92 is \\( 92 \\bmod 10 = 2 \\). Slot 2 is empty ➔ Key 92 stored in Slot 2.<br />4. Hash of 87 is \\( 87 \\bmod 10 = 7 \\). Slot 7 is empty ➔ Key 87 stored in Slot 7.<br />5. Hash of 11 is \\( 11 \\bmod 10 = 1 \\). Slot 1 is empty ➔ Key 11 stored in Slot 1."
+      },
+      {
+        "id": "q-cs-104",
+        "type": "NAT",
+        "question": "An IP packet with a header size of 20 bytes and a total packet size of 1500 bytes is fragmented. The maximum transmission unit (MTU) of the path is 500 bytes. What is the fragment offset value (in units of 8 bytes) in the second fragment?",
+        "correctAnswer": "60",
+        "explanation": "The original payload is \\( 1500 - 20 = 1480 \\) bytes. The MTU is \\( 500 \\) bytes, which includes a \\( 20 \\)-byte IP header, leaving the maximum payload size per fragment as \\( 500 - 20 = 480 \\) bytes. Since \\( 480 \\) is a multiple of \\( 8 \\), it is a valid fragment payload size. Fragment 1 has payload size \\( 480 \\) bytes (offset \\( 0 \\)). Fragment 2 will start at payload offset \\( 480 \\). Therefore, the Fragment Offset field value in the second fragment is \\( \\frac{480}{8} = 60 \\)."
+      },
+      {
+        "id": "q-cs-105",
+        "type": "NAT",
+        "question": "A complete binary tree of height \\( h \\) (where root is at height 0) has a total of 15 leaf nodes. What is the maximum number of nodes in this tree?",
+        "correctAnswer": "31",
+        "explanation": "A complete binary tree has maximum leaves when it is a full binary tree. If the number of leaves is 15 (which must be at the lowest level), and since a perfect binary tree of height \\( h \\) has \\( 2^h \\) leaves, we have \\( 2^h \\le 16 \\implies h = 4 \\). A perfect binary tree of height 4 has \\( 2^4 = 16 \\) leaves and \\( 2^{4+1} - 1 = 31 \\) total nodes."
+      }
+    ]
+  },
+  {
+    "id": "test-cs-pyq-2",
+    "track": "CS",
+    "name": "GATE CS Systems & Theory of Computation",
+    "timeLimit": 1200,
+    "questions": [
+      {
+        "id": "q-cs-106",
+        "type": "MCQ",
+        "question": "Which of the following schedules is always conflict serializable?",
+        "options": [
+          "A schedule obtained by Two-Phase Locking (2PL)",
+          "A schedule obtained by Strict Two-Phase Locking (Strict 2PL)",
+          "Both A and B",
+          "None of the above"
+        ],
+        "correctOption": 2,
+        "explanation": "Any schedule produced under the basic Two-Phase Locking (2PL) protocol is conflict serializable because it ensures a cycle-free serialization graph. Strict 2PL is a subset of 2PL (with additional restrictions on when to release exclusive locks to prevent cascading rollbacks) and is therefore also conflict serializable."
+      },
+      {
+        "id": "q-cs-107",
+        "type": "MCQ",
+        "question": "Consider the language \\( L = \\{ a^n b^n c^m \\mid n, m \\ge 0 \\} \\). This language is classified as:",
+        "options": [
+          "Regular Language",
+          "Context-Free Language (CFL) but not Regular",
+          "Context-Sensitive Language but not CFL",
+          "Recursive Enumerable but not Context-Sensitive"
+        ],
+        "correctOption": 1,
+        "explanation": "We can construct a Pushdown Automaton (PDA) for \\( L \\) by pushing \\( a \\)'s onto the stack and popping them with \\( b \\)'s. The stack remains empty for \\( c \\)'s (which require no comparisons since their count \\( m \\) is independent of \\( n \\)). Thus, \\( L \\) is Context-Free but not regular."
+      },
+      {
+        "id": "q-cs-108",
+        "type": "MCQ",
+        "question": "In a demand paging system, a page fault takes 10 milliseconds to service if a free frame is available or if the victim page is not dirty. If the victim page is dirty, it takes 30 milliseconds. The memory access time is 100 nanoseconds. If 20% of the replaced pages are dirty, and the page fault rate is 1 in 1000, what is the effective memory access time?",
+        "options": [
+          "10.1 microseconds",
+          "14.1 microseconds",
+          "20.1 microseconds",
+          "30.1 microseconds"
+        ],
+        "correctOption": 1,
+        "explanation": "Let page fault rate \\( p = 0.001 \\). Memory access time \\( t_m = 100 \\) ns = \\( 10^{-7} \\) s.<br />Page fault service time:<br />- Not dirty (80%): \\( 10 \\) ms = \\( 0.01 \\) s.<br />- Dirty (20%): \\( 30 \\) ms = \\( 0.03 \\) s.<br />Average page fault service time \\( t_f = 0.8 \\times 10 + 0.2 \\times 30 = 14 \\) ms = \\( 14 \\times 10^6 \\) ns.<br /><br />Effective Access Time \\( EAT = (1-p) t_m + p t_f \\approx t_m + p t_f = 100 + 0.001 \\times (14 \\times 10^6) = 100 + 14000 = 14100 \\) ns = \\( 14.1 \\) microseconds."
+      },
+      {
+        "id": "q-cs-109",
+        "type": "NAT",
+        "question": "Consider a fully associative cache of size 64 KB with block size of 16 bytes. The main memory size is 4 GB. What is the size of the Tag directory in bits?",
+        "correctAnswer": "114688",
+        "explanation": "Physical address size = \\( \\log_2(4 \\text{ GB}) = 32 \\) bits.<br />Block offset = \\( \\log_2(16 \\text{ bytes}) = 4 \\) bits.<br />Since the cache is fully associative, there are no Index bits.<br />Tag bits = Physical address - Block offset = \\( 32 - 4 = 28 \\) bits.<br />Number of cache lines = Cache size / Block size = \\( 64 \\text{ KB} / 16 \\text{ B} = 4096 \\) lines.<br />Tag directory size = Number of lines × Tag bits = \\( 4096 \\times 28 = 114688 \\) bits."
+      },
+      {
+        "id": "q-cs-110",
+        "type": "NAT",
+        "question": "A pipeline has 5 stages with delays of 10, 15, 12, 18, and 14 nanoseconds respectively. The interface register delay is 2 nanoseconds. What is the clock cycle time of this pipeline in nanoseconds?",
+        "correctAnswer": "20",
+        "explanation": "The clock cycle time of a pipeline is determined by the maximum stage delay plus the interface register overhead:<br />\\( T_c = \\max(\\text{Stage Delays}) + \\text{Register Delay} = \\max(10, 15, 12, 18, 14) + 2 = 18 + 2 = 20 \\) nanoseconds."
+      }
+    ]
+  },
+  {
+    "id": "test-da-pyq-1",
+    "track": "DA",
+    "name": "GATE DA Linear Algebra & ML Mock",
+    "timeLimit": 1200,
+    "questions": [
+      {
+        "id": "q-da-101",
+        "type": "MCQ",
+        "question": "Suppose we train a Logistic Regression model on a dataset. If we double the value of all features for every data point, what happens to the decision boundary?",
+        "options": [
+          "It shifts closer to the origin.",
+          "It rotates by 90 degrees.",
+          "It remains exactly the same in terms of classification, though weights are halved.",
+          "It becomes highly non-linear."
+        ],
+        "correctOption": 2,
+        "explanation": "Logistic Regression makes decisions based on the sign of \\( w^T x + b = 0 \\). If all feature vectors \\( x \\) are doubled to \\( 2x \\), we can achieve identical classification by halving the weight vector \\( w \\) to \\( w/2 \\), leading to \\( (w/2)^T (2x) + b = w^T x + b = 0 \\). Therefore, the physical decision boundary and classification of all points remain completely unchanged."
+      },
+      {
+        "id": "q-da-102",
+        "type": "MCQ",
+        "question": "Let \\( A \\) be a \\( 3 \\times 3 \\) matrix with eigenvalues \\( 1 \\), \\( 2 \\), and \\( 5 \\). What is the trace of the matrix \\( B = A^2 - 3A + 4I \\)?",
+        "options": [
+          "13",
+          "15",
+          "18",
+          "20"
+        ],
+        "correctOption": 2,
+        "explanation": "By the spectral mapping theorem, the eigenvalues of the matrix \\( B = A^2 - 3A + 4I \\) are given by applying the polynomial function to the eigenvalues of \\( A \\) (which are \\( \\lambda_1=1 \\), \\( \\lambda_2=2 \\), and \\( \\lambda_3=5 \\)).<br /><br />• For \\( \\lambda_1=1 \\): The corresponding eigenvalue of \\( B \\) is \\( 1^2 - 3(1) + 4 = 2 \\).<br />• For \\( \\lambda_2=2 \\): The corresponding eigenvalue of \\( B \\) is \\( 2^2 - 3(2) + 4 = 2 \\).<br />• For \\( \\lambda_3=5 \\): The corresponding eigenvalue of \\( B \\) is \\( 5^2 - 3(5) + 4 = 14 \\).<br /><br />Since the trace of a matrix is equal to the sum of its eigenvalues, we have:<br />\\( \\text{Trace}(B) = 2 + 2 + 14 = 18 \\)."
+      },
+      {
+        "id": "q-da-103",
+        "type": "MCQ",
+        "question": "Let \\( A \\) be an \\( n \\times n \\) real symmetric positive definite matrix. Which of the following statements is FALSE?",
+        "options": [
+          "All eigenvalues of \\( A \\) are strictly positive.",
+          "The determinant of \\( A \\) is strictly positive.",
+          "There exists a non-zero vector \\( x \\) such that \\( x^T A x < 0 \\).",
+          "All diagonal elements of \\( A \\) are strictly positive."
+        ],
+        "correctOption": 2,
+        "explanation": "By definition, a real symmetric matrix \\( A \\) is positive definite if and only if \\( x^T A x > 0 \\) for all non-zero vectors \\( x \\). Therefore, the statement 'There exists a non-zero vector \\( x \\) such that \\( x^T A x < 0 \\)' is false."
+      },
+      {
+        "id": "q-da-104",
+        "type": "NAT",
+        "question": "What is the maximum rank that a 4 × 8 matrix can have?",
+        "correctAnswer": "4",
+        "explanation": "The rank of an \\( m \\times n \\) matrix cannot exceed the minimum of the number of rows and columns. Thus, \\( \\text{rank}(A) \\le \\min(4, 8) = 4 \\)."
+      },
+      {
+        "id": "q-da-105",
+        "type": "NAT",
+        "question": "Consider a single artificial neuron with 2 inputs \\( x_1 \\) and \\( x_2 \\), weights \\( w_1 = 1.5, w_2 = -2.0 \\), and bias \\( b = 0.5 \\). The activation function is the linear threshold (activation = 1 if weighted sum ≥ 0 else 0). If the inputs are \\( x_1 = 1, x_2 = 1 \\), what is the output?",
+        "correctAnswer": "1",
+        "explanation": "Weighted sum = \\( w_1 x_1 + w_2 x_2 + b = (1.5)(1) + (-2.0)(1) + 0.5 = 1.5 - 2.0 + 0.5 = 0 \\). Since the weighted sum \\( 0 \\ge 0 \\), the activation threshold is satisfied, and the output is 1."
+      }
+    ]
+  },
+  {
+    "id": "test-da-pyq-2",
+    "track": "DA",
+    "name": "GATE DA Probability & Stats Mock",
+    "timeLimit": 1200,
+    "questions": [
+      {
+        "id": "q-da-106",
+        "type": "MCQ",
+        "question": "Consider a Naive Bayes classifier with two classes, \\( C_1 \\) and \\( C_2 \\). The prior probabilities are \\( P(C_1) = 0.6 \\) and \\( P(C_2) = 0.4 \\). For a given query vector \\( x \\), the likelihoods are \\( P(x|C_1) = 0.3 \\) and \\( P(x|C_2) = 0.7 \\). What is the posterior probability \\( P(C_1|x) \\)? (Round off to 2 decimal places)",
+        "options": [
+          "0.30",
+          "0.39",
+          "0.50",
+          "0.60"
+        ],
+        "correctOption": 1,
+        "explanation": "By Bayes' theorem:<br />\\( P(C_1|x) = \\frac{P(x|C_1) P(C_1)}{P(x|C_1) P(C_1) + P(x|C_2) P(C_2)} \\)<br /><br />Substituting the given values:<br />\\( P(C_1|x) = \\frac{0.3 \\times 0.6}{0.3 \\times 0.6 + 0.7 \\times 0.4} = \\frac{0.18}{0.18 + 0.28} = \\frac{0.18}{0.46} \\approx 0.3913 \\)<br /><br />Rounding off to 2 decimal places, we get \\( 0.39 \\) (option index 1)."
+      },
+      {
+        "id": "q-da-107",
+        "type": "MCQ",
+        "question": "A fair coin is tossed 3 times. What is the probability of getting at least 2 heads?",
+        "options": [
+          "\\( 1/4 \\)",
+          "\\( 3/8 \\)",
+          "\\( 1/2 \\)",
+          "\\( 5/8 \\)"
+        ],
+        "correctOption": 2,
+        "explanation": "The outcomes with at least 2 heads are: HHH, HHT, HTH, THH. Total possible outcomes = \\( 2^3 = 8 \\). The number of favorable outcomes is 4. Thus, probability = \\( 4/8 = 1/2 \\)."
+      },
+      {
+        "id": "q-da-108",
+        "type": "MCQ",
+        "question": "If \\( X \\) and \\( Y \\) are independent random variables with \\( \\text{Var}(X) = 4 \\) and \\( \\text{Var}(Y) = 9 \\), what is \\( \\text{Var}(2X - 3Y) \\)?",
+        "options": [
+          "25",
+          "97",
+          "65",
+          "13"
+        ],
+        "correctOption": 1,
+        "explanation": "Since X and Y are independent, their covariance is 0. Using variance properties:<br />\\( \\text{Var}(aX + bY) = a^2\\text{Var}(X) + b^2\\text{Var}(Y) \\)<br />Here, \\( a = 2 \\) and \\( b = -3 \\). Therefore:<br />\\( \\text{Var}(2X - 3Y) = 2^2\\text{Var}(X) + (-3)^2\\text{Var}(Y) = 4(4) + 9(9) = 16 + 81 = 97 \\)."
+      },
+      {
+        "id": "q-da-109",
+        "type": "NAT",
+        "question": "A batch of 100 components contains 10 defective items. If 2 components are selected at random without replacement, what is the probability (in percentage, round off to 1 decimal place) that both are defective?",
+        "correctAnswer": "0.9",
+        "explanation": "Probability of first item being defective = \\( 10/100 = 0.1 \\).<br />Probability of second item being defective given the first was defective = \\( 9/99 \\approx 0.0909 \\).<br />Probability that both are defective = \\( (10/100) \\times (9/99) = 90 / 9900 = 1/110 \\approx 0.00909 \\).<br />In percentage = \\( 0.00909 \\times 100 = 0.909 \\% \\approx 0.9\\% \\)."
+      },
+      {
+        "id": "q-da-110",
+        "type": "NAT",
+        "question": "The mean of a Binomial distribution with parameters \\( n \\) and \\( p \\) is 10, and its variance is 5. What is the value of parameter \\( n \\)?",
+        "correctAnswer": "20",
+        "explanation": "For a Binomial distribution:<br />Mean = \\( np = 10 \\)<br />Variance = \\( np(1-p) = 5 \\)<br /><br />Substituting the mean in the variance equation:<br />\\( 10(1-p) = 5 \\implies 1-p = 0.5 \\implies p = 0.5 \\).<br />Now, using the mean equation:<br />\\( n(0.5) = 10 \\implies n = 20 \\)."
+      }
+    ]
+  }
+]

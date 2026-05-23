@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../AppContext';
-import { MOCK_TESTS } from '../data/mockData';
+import { MOCK_TESTS, parseIITMSidebar, parseIITMQuestionPage, IITM_QBANK_OFFLINE_SEED } from '../data/mockData';
 
 const Timer = ({ initialTime, onTimeUp }) => {
   const [secondsLeft, setSecondsLeft] = useState(initialTime);
@@ -83,6 +83,308 @@ const Practice = () => {
   const [answers, setAnswers] = useState({}); // { [qId]: index | string }
   const [markedForReview, setMarkedForReview] = useState({}); // { [qId]: boolean }
   const [testResult, setTestResult] = useState(null); // stores result report
+
+  const [mockTests, setMockTests] = useState(MOCK_TESTS);
+  const [syncStatus, setSyncStatus] = useState('loading'); // 'loading' | 'live' | 'offline'
+
+  // Fetch dynamic mock tests from local/remote on mount
+  useEffect(() => {
+    let active = true;
+    const fetchMockTests = async () => {
+      try {
+        let response = await fetch('/mock_tests.json');
+        if (!response.ok) throw new Error('Local fetch failed');
+        let data = await response.json();
+        if (active) {
+          setMockTests(data);
+          setSyncStatus('live');
+        }
+      } catch (err) {
+        console.warn('GATEPrep Nexus Practice: Local fetch fallback to GitHub...', err);
+        try {
+          let response = await fetch('https://raw.githubusercontent.com/shrikrishna97/gateprep-nexus/main/public/mock_tests.json');
+          if (!response.ok) throw new Error('GitHub fetch failed', { cause: err });
+          let data = await response.json();
+          if (active) {
+            setMockTests(data);
+            setSyncStatus('live');
+          }
+        } catch (gitErr) {
+          console.warn('GATEPrep Nexus Practice: Network fetch failed, using offline seeds.', gitErr);
+          if (active) {
+            setMockTests(MOCK_TESTS);
+            setSyncStatus('offline');
+          }
+        }
+      }
+    };
+    fetchMockTests();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const getWeeklyChallenges = (testsPool) => {
+    const now = new Date();
+    const start = new Date(now.getFullYear(), 0, 1);
+    const diff = now - start;
+    const oneWeek = 7 * 24 * 60 * 60 * 1000;
+    const weekIdx = Math.floor(diff / oneWeek) || 1;
+
+    // Pool all questions from the active mock papers by track
+    const csQuestionsPool = [];
+    const daQuestionsPool = [];
+
+    testsPool.forEach(test => {
+      if (test.track === 'CS') {
+        csQuestionsPool.push(...test.questions);
+      } else if (test.track === 'DA') {
+        daQuestionsPool.push(...test.questions);
+      }
+    });
+
+    if (csQuestionsPool.length === 0 || daQuestionsPool.length === 0) {
+      return [];
+    }
+
+    // Deterministically select 3 questions based on week index
+    const selectQuestions = (pool, seed) => {
+      const selected = [];
+      const len = pool.length;
+      for (let i = 0; i < Math.min(3, len); i++) {
+        const idx = (seed + i) % len;
+        if (!selected.find(q => q.id === pool[idx].id)) {
+          selected.push(pool[idx]);
+        }
+      }
+      return selected;
+    };
+
+    const csSelected = selectQuestions(csQuestionsPool, weekIdx);
+    const daSelected = selectQuestions(daQuestionsPool, weekIdx + 5);
+
+    return [
+      {
+        id: `weekly-cs-challenge-${weekIdx}`,
+        track: 'CS',
+        name: `🔥 Weekly CS Challenge (Week ${weekIdx})`,
+        timeLimit: 10 * 60, // 10 mins
+        questions: csSelected,
+        isWeekly: true
+      },
+      {
+        id: `weekly-da-challenge-${weekIdx}`,
+        track: 'DA',
+        name: `🔥 Weekly DA Challenge (Week ${weekIdx})`,
+        timeLimit: 10 * 60, // 10 mins
+        questions: daSelected,
+        isWeekly: true
+      }
+    ];
+  };
+
+  const [dailyLiveMock, setDailyLiveMock] = useState(null);
+  const [dailyLoadingStatus, setDailyLoadingStatus] = useState('idle'); // 'idle' | 'loading' | 'ready' | 'error'
+
+  // Fetch and compile Daily Live Challenge Mock in the background dynamically
+  // Fetch and compile Daily Live Challenge Mock in the background dynamically
+  useEffect(() => {
+    let active = true;
+    const compileDailyMock = async () => {
+      setDailyLoadingStatus('loading');
+      
+      const todayDate = new Date();
+      const seed = todayDate.getFullYear() * 10000 + (todayDate.getMonth() + 1) * 100 + todayDate.getDate();
+
+      // If active track is CS, we dynamically build a high-quality, daily-rotating 5-question mock
+      // strictly using our authenticated GATE CS question pool (no off-topic DA/ML questions!)
+      if (user?.track === 'CS') {
+        try {
+          const csPool = [];
+          mockTests.forEach(test => {
+            if (test.track === 'CS') {
+              csPool.push(...test.questions);
+            }
+          });
+
+          if (csPool.length === 0) {
+            throw new Error('No CS questions found in pool');
+          }
+
+          // Deterministically select 5 CS questions based on date seed
+          const selectedQuestions = [];
+          const len = csPool.length;
+          for (let i = 0; i < 5; i++) {
+            const idx = (seed + i * 3) % len;
+            const candidate = csPool[idx];
+            // Ensure no duplicate IDs if pool has enough items
+            if (selectedQuestions.length < len && !selectedQuestions.find(q => q.id === candidate.id)) {
+              selectedQuestions.push(candidate);
+            } else {
+              selectedQuestions.push({ ...candidate, id: `${candidate.id}-daily-dup-${i}` });
+            }
+          }
+
+          if (active) {
+            setDailyLiveMock({
+              id: `daily-cs-assessment-${seed}`,
+              track: 'CS',
+              name: `🌟 Daily CS PYQ Mock - ${todayDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`,
+              timeLimit: 15 * 60,
+              questions: selectedQuestions.slice(0, 5),
+              isDailyChallenge: true
+            });
+            setDailyLoadingStatus('ready');
+          }
+        } catch (err) {
+          console.error('GATEPrep CS Daily Compiler Error:', err);
+          if (active) setDailyLoadingStatus('error');
+        }
+        return;
+      }
+
+      // If active track is DA or Dual, scrape from IITM BSc portal
+      try {
+        const BASE_URLS = [
+          'https://iitmbsc-student-projects.github.io/gate-da/',
+          'https://raw.githubusercontent.com/IITMBSC-Student-Projects/gate-da/main/',
+          'https://raw.githubusercontent.com/IITMBSC-Student-Projects/gate-da/master/'
+        ];
+
+        let indexHtml = '';
+        let resolvedBaseUrl = '';
+
+        for (const url of BASE_URLS) {
+          try {
+            const indexResponse = await fetch(`${url}index.html`);
+            if (indexResponse.ok) {
+              indexHtml = await indexResponse.text();
+              resolvedBaseUrl = url;
+              break;
+            }
+          } catch (e) {
+            console.warn(`GATEPrep Practice: Failed to fetch index from ${url}`, e);
+          }
+        }
+
+        if (!indexHtml || !resolvedBaseUrl) {
+          throw new Error('All index endpoints failed');
+        }
+
+        const parsedIndex = parseIITMSidebar(indexHtml);
+        
+        if (!parsedIndex || parsedIndex.length === 0) {
+          throw new Error('No links parsed from index');
+        }
+
+        // Deterministically select 5 questions based on today's calendar date seed
+        const selectedIndexItems = [];
+        const len = parsedIndex.length;
+        for (let i = 0; i < Math.min(5, len); i++) {
+          const idx = (seed + i * 7) % len;
+          if (!selectedIndexItems.find(item => item.relativePath === parsedIndex[idx].relativePath)) {
+            selectedIndexItems.push(parsedIndex[idx]);
+          }
+        }
+
+        // Concurrently fetch and parse the detailed question HTML pages
+        const questionsPromises = selectedIndexItems.map(async (qItem, qIdx) => {
+          try {
+            const subpageUrl = `${resolvedBaseUrl}${qItem.relativePath}`;
+            const subpageResponse = await fetch(subpageUrl);
+            if (!subpageResponse.ok) throw new Error(`Status ${subpageResponse.status}`);
+            const subpageHtml = await subpageResponse.text();
+            const parsedData = parseIITMQuestionPage(subpageHtml, qItem.relativePath);
+
+            const type = parsedData.type === 'MCQ' || parsedData.type === 'MSQ' ? 'MCQ' : 'NAT';
+            const options = parsedData.options || [];
+            
+            return {
+              id: `daily-live-q-${qIdx}`,
+              type: type,
+              question: parsedData.questionHtml || parsedData.questionText || 'Live question payload',
+              options: options,
+              correctOption: parsedData.correctIdx !== null ? parsedData.correctIdx : (parsedData.correctIdxs && parsedData.correctIdxs[0] !== undefined ? parsedData.correctIdxs[0] : 0),
+              correctAnswer: parsedData.natAnswer || '0',
+              explanation: parsedData.solutionHtml || 'No explanation provided.'
+            };
+          } catch (itemErr) {
+            console.warn(`GATEPrep Nexus Daily Scraper: Question subpage fetch failed for ${qItem.title}, using seed fallback...`, itemErr);
+            const fallbackSeedObj = IITM_QBANK_OFFLINE_SEED[qIdx % IITM_QBANK_OFFLINE_SEED.length];
+            const type = fallbackSeedObj.type === 'MCQ' || fallbackSeedObj.type === 'MSQ' ? 'MCQ' : 'NAT';
+            return {
+              id: `daily-live-fallback-q-${qIdx}`,
+              type: type,
+              question: fallbackSeedObj.questionHtml || fallbackSeedObj.questionText || 'Seed fallback question',
+              options: fallbackSeedObj.options || [],
+              correctOption: fallbackSeedObj.correctIdx !== null ? fallbackSeedObj.correctIdx : (fallbackSeedObj.correctIdxs && fallbackSeedObj.correctIdxs[0] !== undefined ? fallbackSeedObj.correctIdxs[0] : 0),
+              correctAnswer: fallbackSeedObj.natAnswer || '0',
+              explanation: fallbackSeedObj.solutionHtml || 'Seed explanation.'
+            };
+          }
+        });
+
+        const compiledQuestions = await Promise.all(questionsPromises);
+
+        if (active) {
+          setDailyLiveMock({
+            id: `daily-live-assessment-${seed}`,
+            track: user?.track === 'Dual' ? 'Dual' : 'DA',
+            name: `🌟 Daily Live-Scraped Mock - ${todayDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`,
+            timeLimit: 15 * 60,
+            questions: compiledQuestions,
+            isDailyChallenge: true
+          });
+          setDailyLoadingStatus('ready');
+        }
+      } catch (err) {
+        console.warn('GATEPrep Nexus Daily Scraper: Global dynamic fetch failed, assembling offline daily mock from seeds.', err);
+        
+        const offlineQuestions = [];
+        for (let i = 0; i < 5; i++) {
+          const seedIdx = (seed + i) % IITM_QBANK_OFFLINE_SEED.length;
+          const fallbackSeedObj = IITM_QBANK_OFFLINE_SEED[seedIdx];
+          const type = fallbackSeedObj.type === 'MCQ' || fallbackSeedObj.type === 'MSQ' ? 'MCQ' : 'NAT';
+          offlineQuestions.push({
+            id: `daily-offline-q-${i}`,
+            type: type,
+            question: fallbackSeedObj.questionHtml || fallbackSeedObj.questionText,
+            options: fallbackSeedObj.options || [],
+            correctOption: fallbackSeedObj.correctIdx !== null ? fallbackSeedObj.correctIdx : (fallbackSeedObj.correctIdxs && fallbackSeedObj.correctIdxs[0] !== undefined ? fallbackSeedObj.correctIdxs[0] : 0),
+            correctAnswer: fallbackSeedObj.natAnswer || '0',
+            explanation: fallbackSeedObj.solutionHtml
+          });
+        }
+
+        if (active) {
+          setDailyLiveMock({
+            id: `daily-offline-assessment-${seed}`,
+            track: user?.track === 'Dual' ? 'Dual' : 'DA',
+            name: `🌟 Daily Offline Mock - ${todayDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`,
+            timeLimit: 15 * 60,
+            questions: offlineQuestions,
+            isDailyChallenge: true,
+            isOfflineFallback: true
+          });
+          setDailyLoadingStatus('ready');
+        }
+      }
+    };
+
+    compileDailyMock();
+    return () => {
+      active = false;
+    };
+  }, [user?.track, mockTests]);
+
+  const allTests = React.useMemo(() => {
+    const weeklyChallenges = getWeeklyChallenges(mockTests);
+    const baseList = [...weeklyChallenges, ...mockTests];
+    if (dailyLiveMock) {
+      return [dailyLiveMock, ...baseList];
+    }
+    return baseList;
+  }, [mockTests, dailyLiveMock]);
 
   const currentQuestionType = activeTest?.questions[currentQIndex]?.type;
   const answerTrigger = currentQuestionType === 'MCQ' ? answers : null;
@@ -169,7 +471,14 @@ const Practice = () => {
 
 
 
-  const filteredTests = MOCK_TESTS.filter(test => test.track === user?.track || user?.track === 'Dual');
+  const filteredTests = allTests.filter(test => {
+    // Hide all static base mocks from the selection dashboard so that ONLY the dynamic Daily Live Mock and Weekly Challenge remain visible.
+    // This keeps the database active for pooling questions under Weekly Challenges while keeping the user interface extremely focused.
+    if (test.id.startsWith('test-cs-pyq') || test.id.startsWith('test-da-pyq')) {
+      return false;
+    }
+    return test.track === 'Dual' || user?.track === 'Dual' || test.track === user?.track;
+  });
 
   // RENDER VIEW 1: Test Result Review
   if (testResult) {
@@ -529,7 +838,31 @@ const Practice = () => {
       {/* Left Column: Mock papers selection list */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <div className="glass-panel" style={{ padding: '24px' }}>
-          <h3 style={{ marginBottom: '6px' }}>GATE Practice Sets</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '10px' }}>
+            <h3 style={{ margin: 0 }}>GATE Practice Sets</h3>
+            <span style={{
+              fontSize: '0.72rem',
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              color: syncStatus === 'live' ? 'var(--accent-emerald)' : (syncStatus === 'offline' ? 'var(--accent-amber)' : 'var(--text-muted)'),
+              backgroundColor: 'rgba(255, 255, 255, 0.02)',
+              padding: '4px 10px',
+              borderRadius: '12px',
+              border: `1px solid ${syncStatus === 'live' ? 'rgba(52, 211, 153, 0.15)' : 'rgba(255, 255, 255, 0.05)'}`
+            }}>
+              <span style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: syncStatus === 'live' ? 'var(--accent-emerald)' : (syncStatus === 'offline' ? 'var(--accent-amber)' : 'var(--text-muted)'),
+                display: 'inline-block',
+                boxShadow: syncStatus === 'live' ? '0 0 8px var(--accent-emerald)' : 'none'
+              }} className={syncStatus === 'live' ? 'pulse-dot' : ''} />
+              {syncStatus === 'live' ? 'Live Connected' : (syncStatus === 'offline' ? 'Local Cache Mode' : 'Syncing...')}
+            </span>
+          </div>
           <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: 0 }}>
             Mock tests containing actual previous year GATE questions (PYQs) to test your readiness.
           </p>
@@ -541,23 +874,49 @@ const Practice = () => {
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {filteredTests.map((test) => (
-              <div 
-                key={test.id} 
-                className="glass-panel" 
-                style={{
-                  padding: '24px',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  flexWrap: 'wrap',
-                  gap: '16px'
-                }}
-              >
-                <div>
-                  <span className={`badge ${test.track === 'CS' ? 'badge-purple' : 'badge-blue'}`} style={{ fontSize: '0.65rem', marginBottom: '8px' }}>
-                    GATE {test.track} Focus
-                  </span>
+            {filteredTests.map((test) => {
+              let border = '1px solid var(--border-color)';
+              let background = 'var(--bg-glass)';
+              
+              if (test.isDailyChallenge) {
+                border = '1px solid rgba(16, 185, 129, 0.4)';
+                background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(20, 184, 166, 0.05) 100%)';
+              } else if (test.isWeekly) {
+                border = '1px solid rgba(139, 92, 246, 0.3)';
+                background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.04) 0%, rgba(59, 130, 246, 0.04) 100%)';
+              }
+              
+              return (
+                <div 
+                  key={test.id} 
+                  className="glass-panel" 
+                  style={{
+                    padding: '24px',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    gap: '16px',
+                    border,
+                    background
+                  }}
+                >
+                  <div>
+                    <div style={{ display: 'flex', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+                      <span className={`badge ${test.track === 'CS' ? 'badge-purple' : (test.track === 'DA' ? 'badge-blue' : 'badge-emerald')}`} style={{ fontSize: '0.65rem' }}>
+                        {test.track === 'Dual' ? 'All Tracks' : `GATE ${test.track} Focus`}
+                      </span>
+                      {test.isDailyChallenge && (
+                        <span className={`badge ${test.isOfflineFallback ? 'badge-amber' : 'badge-emerald'}`} style={{ fontSize: '0.65rem' }}>
+                          {test.isOfflineFallback ? '📁 Daily Offline Mock' : '⚡ Daily Live Mock'}
+                        </span>
+                      )}
+                      {test.isWeekly && (
+                        <span className="badge badge-purple" style={{ fontSize: '0.65rem' }}>
+                          🔥 Weekly Challenge
+                        </span>
+                      )}
+                    </div>
                   <h4 style={{ fontSize: '1.15rem', fontWeight: 700, margin: '2px 0 6px' }}>{test.name}</h4>
                   <div style={{ display: 'flex', gap: '16px', fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
                     <span>⏱️ Time: <strong>{test.timeLimit / 60} mins</strong></span>
@@ -569,7 +928,8 @@ const Practice = () => {
                   Start Simulator 🚀
                 </button>
               </div>
-            ))}
+            );
+          })}
           </div>
         )}
       </div>

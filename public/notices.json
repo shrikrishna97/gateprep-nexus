@@ -1,0 +1,30 @@
+[
+  {
+    "id": "n1",
+    "title": "GATE 2027 Organizing Institute Announcement",
+    "content": "IIT Madras is tentatively designated as the organizing institute for the GATE 2027 examination. The official information brochure is expected in late August 2026.",
+    "date": "2026-05-15",
+    "category": "Official"
+  },
+  {
+    "id": "n2",
+    "title": "New paper Data Science & AI (DA) updates",
+    "content": "The GATE committee released clarification that the DA paper will feature approximately 15% General Aptitude and 85% technical content covering Machine Learning, AI, Math, and Databases. Programming questions will primarily be focused on Python.",
+    "date": "2026-05-10",
+    "category": "Syllabus"
+  },
+  {
+    "id": "n3",
+    "title": "Registration Schedule Estimate",
+    "content": "Online application forms for GATE 2027 will tentatively be available starting August 30, 2026 and close on October 5, 2026 (without late fee). Keep your documents ready.",
+    "date": "2026-05-01",
+    "category": "Important"
+  },
+  {
+    "id": "n4",
+    "title": "Official GATE Mock Test Links Released",
+    "content": "Official computer-based test (CBT) mock links are now active on the web portal. Candidates can experience the exact interface layout, calculator alignment, and section division rules.",
+    "date": "2026-05-22",
+    "category": "Official"
+  }
+]

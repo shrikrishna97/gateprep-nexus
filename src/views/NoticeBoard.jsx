@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp, calculateDaysBetween, formatDateLocal } from '../AppContext';
 import { GATE_NOTICES } from '../data/mockData';
 
@@ -44,8 +44,47 @@ const NoticeBoard = () => {
   const daysToReg = calculateDaysBetween(today, regStart);
   const daysToExam = calculateDaysBetween(today, examDate);
 
+  const [notices, setNotices] = useState(GATE_NOTICES);
+  const [syncStatus, setSyncStatus] = useState('loading'); // 'loading' | 'live' | 'offline'
+
+  useEffect(() => {
+    let active = true;
+    const fetchNotices = async () => {
+      try {
+        let response = await fetch('/notices.json');
+        if (!response.ok) throw new Error('Local fetch failed');
+        let data = await response.json();
+        if (active) {
+          setNotices(data);
+          setSyncStatus('live');
+        }
+      } catch (err) {
+        console.warn('GATEPrep Nexus NoticeBoard: Local fetch fallback to GitHub...', err);
+        try {
+          let response = await fetch('https://raw.githubusercontent.com/shrikrishna97/gateprep-nexus/main/public/notices.json');
+          if (!response.ok) throw new Error('GitHub fetch failed', { cause: err });
+          let data = await response.json();
+          if (active) {
+            setNotices(data);
+            setSyncStatus('live');
+          }
+        } catch (gitErr) {
+          console.warn('GATEPrep Nexus NoticeBoard: Network fetch failed, using offline seed notices.', gitErr);
+          if (active) {
+            setNotices(GATE_NOTICES);
+            setSyncStatus('offline');
+          }
+        }
+      }
+    };
+    fetchNotices();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   // Dynamic Notices shifter based on target exam year
-  const dynamicNotices = GATE_NOTICES.map(notice => {
+  const dynamicNotices = notices.map(notice => {
     let title = notice.title;
     let content = notice.content;
     let date = notice.date;
@@ -115,9 +154,33 @@ const NoticeBoard = () => {
         
         {/* Left Side: Official Timeline Bulletins */}
         <div className="glass-panel" style={{ padding: '28px' }}>
-          <h3 style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span>📢</span> Official Announcements
-          </h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
+            <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span>📢</span> Official Announcements
+            </h3>
+            <span style={{
+              fontSize: '0.72rem',
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              color: syncStatus === 'live' ? 'var(--accent-emerald)' : (syncStatus === 'offline' ? 'var(--accent-amber)' : 'var(--text-muted)'),
+              backgroundColor: 'rgba(255, 255, 255, 0.02)',
+              padding: '4px 10px',
+              borderRadius: '12px',
+              border: `1px solid ${syncStatus === 'live' ? 'rgba(52, 211, 153, 0.15)' : 'rgba(255, 255, 255, 0.05)'}`
+            }}>
+              <span style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: syncStatus === 'live' ? 'var(--accent-emerald)' : (syncStatus === 'offline' ? 'var(--accent-amber)' : 'var(--text-muted)'),
+                display: 'inline-block',
+                boxShadow: syncStatus === 'live' ? '0 0 8px var(--accent-emerald)' : 'none'
+              }} className={syncStatus === 'live' ? 'pulse-dot' : ''} />
+              {syncStatus === 'live' ? 'Live Connected' : (syncStatus === 'offline' ? 'Local Cache Mode' : 'Syncing...')}
+            </span>
+          </div>
           
           <div className="news-timeline">
             {dynamicNotices.map((notice, idx) => {

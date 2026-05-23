@@ -22,7 +22,7 @@ const categoriesList = [
 
 export default function CommunityQBank() {
   const { user } = useApp();
-  const BASE_URL = 'https://iitmbsc-student-projects.github.io/gate-da/';
+  const [baseUrl, setBaseUrl] = useState('https://iitmbsc-student-projects.github.io/gate-da/');
   
   // Scraper & Sync State
   const [syncMode, setSyncMode] = useState('syncing'); // 'syncing' | 'online' | 'offline'
@@ -62,15 +62,38 @@ export default function CommunityQBank() {
     const fetchSidebar = async () => {
       try {
         setSyncMode('syncing');
-        const response = await fetch(`${BASE_URL}index.html`);
-        if (!response.ok) {
-          throw new Error(`HTTP Error: ${response.status}`);
+        
+        const BASE_URLS = [
+          'https://iitmbsc-student-projects.github.io/gate-da/',
+          'https://raw.githubusercontent.com/IITMBSC-Student-Projects/gate-da/main/',
+          'https://raw.githubusercontent.com/IITMBSC-Student-Projects/gate-da/master/'
+        ];
+
+        let indexHtml = '';
+        let resolvedBaseUrl = '';
+
+        for (const url of BASE_URLS) {
+          try {
+            const indexResponse = await fetch(`${url}index.html`);
+            if (indexResponse.ok) {
+              indexHtml = await indexResponse.text();
+              resolvedBaseUrl = url;
+              break;
+            }
+          } catch (e) {
+            console.warn(`GATEPrep QBank: Failed to fetch index from ${url}`, e);
+          }
         }
-        const html = await response.text();
-        const parsedIndex = parseIITMSidebar(html);
+
+        if (!indexHtml || !resolvedBaseUrl) {
+          throw new Error('All index endpoints failed');
+        }
+
+        const parsedIndex = parseIITMSidebar(indexHtml);
         
         if (parsedIndex && parsedIndex.length > 0) {
           setQuestionsIndex(parsedIndex);
+          setBaseUrl(resolvedBaseUrl);
           setSyncMode('online');
         } else {
           throw new Error('No question links discovered in the homepage HTML.');
@@ -167,7 +190,7 @@ export default function CommunityQBank() {
     // Dynamic Live Scraping
     setIsPageLoading(true);
     try {
-      const fullUrl = `${BASE_URL}${qItem.relativePath}`;
+      const fullUrl = `${baseUrl}${qItem.relativePath}`;
       const response = await fetch(fullUrl);
       if (!response.ok) {
         throw new Error(`Failed to load question subpage: ${response.status}`);
@@ -184,7 +207,7 @@ export default function CommunityQBank() {
       } else {
         setActiveQuestionData({
           title: qItem.title,
-          questionHtml: `<p class="text-rose-400">Failed to sync this question dynamically from the IIT Madras portal. Please verify your internet connection or check if the page exists at <a href="${BASE_URL}${qItem.relativePath}" target="_blank" class="underline text-purple-300">${qItem.relativePath}</a>.</p>`,
+          questionHtml: `<p class="text-rose-400">Failed to sync this question dynamically from the IIT Madras portal. Please verify your internet connection or check if the page exists at <a href="${baseUrl}${qItem.relativePath}" target="_blank" class="underline text-purple-300">${qItem.relativePath}</a>.</p>`,
           questionText: 'Failed to sync question.',
           options: [],
           type: 'MCQ',
@@ -735,7 +758,7 @@ export default function CommunityQBank() {
                     Source: IITM Student Projects
                   </span>
                   <a 
-                    href={`${BASE_URL}${selectedQuestion.relativePath}`}
+                    href={`${baseUrl}${selectedQuestion.relativePath}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ fontSize: '0.75rem', color: 'var(--accent-purple)', textDecoration: 'underline', fontWeight: '500' }}
